@@ -5,7 +5,7 @@ networks:
     driver: bridge
 
 services:
-  nginx:
+  webserver:
     image: "nginx:alpine"
     container_name: "caliwears_product_webserver"
     working_dir: /product
@@ -35,7 +35,7 @@ services:
     container_name: "caliwears_product_database"
     working_dir: /product
     volumes:
-      - ."/mongo-data:/data/db"
+      - "./docker/db/data:/data/db:rw"
       - "/etc/timezone:/etc/timezone:ro"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -51,7 +51,7 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      ME_CONFIG_MONGODB_URL: mongodb://@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
       ME_CONFIG_BASICAUTH: false
     networks:
       - caliwears_network
