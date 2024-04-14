@@ -4,5 +4,9 @@ WORKDIR "/product"
 
 COPY . .
 
-RUN pecl install mongodb \
+RUN apt-get -y update \
+    && apt-get install -y libssl-dev pkg-config libzip-dev unzip git
+
+RUN pecl install zlib zip mongodb \
+    && docker-php-ext-enable zip \
     && docker-php-ext-enable mongodb
