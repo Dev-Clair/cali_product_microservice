@@ -19,7 +19,7 @@ api_platform:
   doctrine:
     enabled: true
   doctrine_mongodb_odm:
-    enabled: true
+    enabled: false
   mapping:
     paths:
       ["%kernel.project_dir%/src/Entity", "%kernel.project_dir%/src/Document"]
