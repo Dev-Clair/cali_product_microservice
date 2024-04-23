@@ -5,15 +5,16 @@ namespace App\Document;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ODM\MongoDB\Id\UuidGenerator;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 #[ODM\Document(collection: "products", repositoryClass: ProductRepository::class)]
 #[ApiResource]
 class Product
 {
-    #[ODM\Id]
+    #[ODM\Id(strategy: 'none', type: 'uuid')]
     #[ODM\Field]
-    private ?int $id = null;
+    private ?UuidGenerator $id = null;
 
     #[ODM\Field(length: 255)]
     private ?string $name = null;
