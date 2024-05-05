@@ -105,7 +105,7 @@ class Product
 
     #[Groups(['product.read'])]
     #[ODM\Field(length: 255, nullable: true)]
-    private ?string $image = null;
+    private ?string $image_path = null;
 
     #[Groups(['product.read'])]
     #[ODM\Field(length: 100, nullable: true)]
@@ -272,14 +272,14 @@ class Product
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImagePath(): ?string
     {
-        return $this->image;
+        return $this->image_path;
     }
 
-    public function setImage(?string $image): static
+    public function setImagePath(?string $image_path): static
     {
-        $this->image = $image;
+        $this->image_path = $image_path;
 
         return $this;
     }
