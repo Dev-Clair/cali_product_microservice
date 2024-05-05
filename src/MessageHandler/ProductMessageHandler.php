@@ -6,6 +6,7 @@ use App\Document\Product;
 use App\Message\ProductMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -14,13 +15,13 @@ final class ProductMessageHandler
     public function __construct(
         private DocumentManager $documentManager,
         private ProductRepository $productRepository,
-        // private LoggerInterface $logger
+        private LoggerInterface $logger
     ) {
     }
 
     public function __invoke(ProductMessage $message)
     {
-        $operation = $message->getStatus();
+        $operation = $message->getOperation();
 
         $payload = $message->getPayload();
 
@@ -36,7 +37,7 @@ final class ProductMessageHandler
                 $product->setColors($payload['colors']);
                 $product->setSizes($payload['sizes']);
                 $product->setWeight($payload['weight']);
-                $product->setImage($payload['image']);
+                $product->setImagePath($payload['image_path']);
                 $product->setCategory($payload['category']);
 
                 $this->create($product);
@@ -48,8 +49,13 @@ final class ProductMessageHandler
                 $product = $this->productRepository->findOneBy(['product_id' => $product_id]);
 
                 if (empty($product)) {
-                    // Log product not found message
-                    // Payload = ['operation': 'PATCH', 'product_id'=> $product_id]
+                    $this->logger->error(
+                        'Cannot find product',
+                        [
+                            'operation' => 'PATCH',
+                            'product_id' => $product_id,
+                        ]
+                    );
                     exit();
                 }
 
@@ -61,7 +67,7 @@ final class ProductMessageHandler
                 $payload['colors'] ?? $product->setColors($payload['colors']);
                 $payload['sizes'] ?? $product->setSizes($payload['sizes']);
                 $payload['weight'] ?? $product->setWeight($payload['weight']);
-                $payload['image'] ?? $product->setImage($payload['image']);
+                $payload['image_path'] ?? $product->setImagePath($payload['image_path']);
                 $payload['category'] ?? $product->setCategory($payload['category']);
 
                 $this->update($product);
@@ -73,8 +79,13 @@ final class ProductMessageHandler
                 $product = $this->productRepository->findOneBy(['product_id' => $product_id]);
 
                 if (empty($product)) {
-                    // Log product not found message
-                    // Payload = ['operation': 'DELETE', 'product_id'=> $product_id]
+                    $this->logger->error(
+                        'Cannot find product',
+                        [
+                            'operation' => 'DELETE',
+                            'product_id' => $product_id,
+                        ]
+                    );
                     exit();
                 }
 
