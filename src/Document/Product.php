@@ -10,13 +10,14 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ProductRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ODM\MongoDB\Id\UuidGenerator;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Field;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Id;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ODM\Document(
+#[Document(
     db: 'productservice',
     collection: "products",
     repositoryClass: ProductRepository::class
@@ -24,9 +25,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Get(),
-        new GetCollection()
+        new GetCollection(),
+        new Post()
     ],
-    normalizationContext: ['groups' => ['product.read']]
+    normalizationContext: ['groups' => ['product.read']],
+    denormalizationContext: ['groups' => ['product.write']],
 )]
 #[ApiFilter(
     filterClass: SearchFilter::class,
@@ -45,73 +48,72 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Product
 {
-    #[ApiProperty(identifier: false)]
-    #[ODM\Id(strategy: 'NONE', type: 'uuid')]
-    #[ODM\Field]
-    private ?UuidGenerator $id = null;
+    #[ApiProperty(identifier: true)]
+    #[Id(strategy: 'UUID', type: 'string')]
+    private ?string $id = null;
 
-    #[ODM\Field(length: 100)]
+    #[Field()]
     private ?string $product_id = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(length: 255)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field()]
     private ?string $name = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(length: 255)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field()]
     private ?string $description = null;
 
-    #[ApiProperty(identifier: true)]
-    #[Groups(['product.read'])]
-    #[ODM\Field(length: 255)]
+    #[ApiProperty(identifier: false)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field()]
     private ?string $slug = null;
 
     #[ApiFilter(filterClass: RangeFilter::class, properties: ['product_price'])]
-    #[Groups(['product.read'])]
-    #[ODM\Field(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field()]
     private ?string $price = null;
 
     // #[Groups(['product.read'])]
-    // #[ODM\Field(nullable: true)]
+    // #[Field(nullable: true)]
     // private ?int $stock_quantity = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(length: 255)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field()]
     private ?string $status = null;
 
     // #[Groups(['product.read'])]
-    // #[ODM\Field(type: Types::DATETIME_MUTABLE)]
+    // #[Field(type: Types::DATETIME_MUTABLE)]
     // private ?\DateTimeInterface $production_date = null;
 
     // #[Groups(['product.read'])]
-    // #[ODM\Field(type: Types::DATETIME_MUTABLE)]
+    // #[Field(type: Types::DATETIME_MUTABLE)]
     // private ?\DateTimeInterface $expiry_date = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(nullable: true)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field(nullable: true)]
     private ?\DateInterval $warranty = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(type: Types::SIMPLE_ARRAY, nullable: true)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field(nullable: true)]
     private ?array $colors = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(type: Types::SIMPLE_ARRAY, nullable: true)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field(nullable: true)]
     private ?array $sizes = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(length: 255, nullable: true)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field(nullable: true)]
     private ?string $weight = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(length: 255, nullable: true)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field(nullable: true)]
     private ?string $image_path = null;
 
-    #[Groups(['product.read'])]
-    #[ODM\Field(length: 100, nullable: true)]
+    #[Groups(['product.read', 'product.write'])]
+    #[Field(nullable: true)]
     private ?string $category = null;
 
-    public function getId(): ?UuidGenerator
+    public function getId(): ?string
     {
         return $this->id;
     }
