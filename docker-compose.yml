@@ -11,14 +11,9 @@ services:
     working_dir: /product
     volumes:
       - .:/product
-      - ./node_modules
+      - /node_modules
     command: "npm install && npm start"
-    environment:
-      - NODE_ENV=development
     ports:
       - "3000:3000"
-    env_file:
-      - .env
-      - .env.local
     networks:
       - caliwears_network
