@@ -6,17 +6,19 @@ networks:
 
 services:
   node:
-  image: "node:alpine"
-  container_name: "caliwears_product_service"
-  volumes:
-    - .:/product
-    - ./node_modules
-  command: "npm install && npm start"
-  environment:
-    - NODE_ENV=development
-  ports:
-    - "3000:3000"
-  env_file:
-    - .env
-  networks:
-    - caliwears_network
+    image: "node:20-alpine"
+    container_name: "caliwears_product_service"
+    working_dir: /product
+    volumes:
+      - .:/product
+      - ./node_modules
+    command: "npm install && npm start"
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+      - .env.local
+    networks:
+      - caliwears_network
