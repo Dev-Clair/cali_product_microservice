@@ -38,3 +38,11 @@ exports.deleteProduct = (req, res) => {
   // Removes an existing product using its :id / :slug
   productmodel;
 };
+
+/**
+ * User-Defined Operations
+ */
+exports.getSearchProduct = (req, res) => {
+  // Retrieves an existing or collection of products based on search parameter
+  productmodel;
+};
