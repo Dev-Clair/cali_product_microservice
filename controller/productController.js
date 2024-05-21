@@ -1,8 +1,6 @@
 const express = require("express");
 const productmodel = require("./../model/productmodel");
 
-const app = express();
-
 /**
  * Collection Operations
  */

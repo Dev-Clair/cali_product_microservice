@@ -1,5 +1,9 @@
+const dotenv = require("dotenv");
 const express = require("express");
-const productrouter = require("./../route/productroute");
+const mongoose = require("mongoose");
+const logger = require("logger");
+const { productqueue } = require("./queue/productqueue");
+const productrouter = require("./route/productroute");
 
 dotenv.config(".env");
 
@@ -12,5 +16,17 @@ app.use("api/v1/products", productrouter);
 const port = process.env.MONGO_PORT || 3000;
 
 app.listen(port, () => {
-  // log server start timestamp
+  // Start database
+  try {
+    mongoose.connect(process.env.MONGO_URI).then(messageQueue().catch());
+  } catch (error) {
+    // logger.log({
+    //   level: "error",
+    //   message: `${error.message}`,
+    // });
+  }
+  // Log server start timestamp
+  // logger.log({
+  //   level: "info",
+  // });
 });
