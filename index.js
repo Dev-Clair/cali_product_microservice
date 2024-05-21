@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("logger");
 const { productqueue } = require("./queue/productqueue");
-const productrouter = require("./route/productroute");
+const productrouter = require("./route/productrouter");
 
 dotenv.config(".env");
 
@@ -18,7 +18,13 @@ const port = process.env.MONGO_PORT || 3000;
 app.listen(port, () => {
   // Start database
   try {
-    mongoose.connect(process.env.MONGO_URI).then(messageQueue().catch());
+    mongoose
+      .connect(process.env.MONGO_URI)
+      .then(
+        // Listen to chaanel for messages
+        messageQueue()
+      )
+      .catch();
   } catch (error) {
     // logger.log({
     //   level: "error",
