@@ -6,12 +6,12 @@ const app = express();
 /**
  * Collection Operations
  */
-exports.getProducts = (req, res) => {
+exports.getCollection = (req, res) => {
   // Retrieves product collection
   productmodel;
 };
 
-exports.postProduct = (req, res) => {
+exports.post = () => {
   // Creates a new product
   productmodel;
 };
@@ -19,30 +19,30 @@ exports.postProduct = (req, res) => {
 /**
  * Item Operations
  */
-exports.getProduct = (req, res) => {
+exports.get = (req, res) => {
   // Retrieves an existing product using its :id / :slug
   productmodel;
 };
 
-exports.putProduct = (req, res) => {
+exports.put = () => {
   // Modifies an existing product (entirely) using its :id / :slug
   productmodel;
 };
 
-exports.patchProduct = (req, res) => {
+exports.patch = () => {
   // Modifies an existing product (partially) using its :id / :slug
   productmodel;
 };
 
-exports.deleteProduct = (req, res) => {
+exports.delete = () => {
   // Removes an existing product using its :id / :slug
   productmodel;
 };
 
 /**
- * User-Defined Operations
+ * Hybrid Operations
  */
-exports.getSearchProduct = (req, res) => {
+exports.search = (req, res) => {
   // Retrieves an existing or collection of products based on search parameter
   productmodel;
 };
