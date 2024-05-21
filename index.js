@@ -22,7 +22,7 @@ app.listen(port, () => {
       .connect(process.env.MONGO_URI)
       .then(
         // Listen to chaanel for messages
-        messageQueue()
+        productqueue()
       )
       .catch();
   } catch (error) {
