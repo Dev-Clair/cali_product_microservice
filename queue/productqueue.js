@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-const productcontroller = require("./../controller/productcontroller");
+const productcontroller = require("../controller/productcontroller");
 const logger = require("logger");
 
 dotenv.config(".env.local");
@@ -10,7 +10,7 @@ const rabbitmq_url = process.env.RABBITMQ_URL || "amqp//localhost:5672";
 
 const product_queue = "product_queue";
 
-async function messageQueue() {
+async function productqueue() {
   try {
     const connection = await amqp.connect(rabbitmq_url);
 
@@ -56,13 +56,13 @@ function operation(product) {
       break;
 
     default:
-      logger.log({
-        level: "info",
-        message: "Invalid Resource Operation",
-        data: { product },
-      });
+      // logger.log({
+      //   level: "info",
+      //   message: "Invalid Resource Operation",
+      //   data: { product },
+      // });
       break;
   }
 }
 
-module.exports = { messageQueue };
+module.exports = { productqueue };
