@@ -1,16 +1,9 @@
-const dotenv = require("dotenv");
 const productcontroller = require("../controller/productcontroller");
 const logger = require("logger");
 
-dotenv.config(".env.local");
-
 const amqp = require("amqplib");
 
-const rabbitmq_url = process.env.RABBITMQ_URL || "amqp//localhost:5672";
-
-const product_queue = "product_queue";
-
-async function productqueue() {
+async function productqueue(rabbitmq_url, product_queue) {
   try {
     const connection = await amqp.connect(rabbitmq_url);
 
