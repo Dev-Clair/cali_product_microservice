@@ -6,19 +6,19 @@ dotenv.config(".env.local");
 
 const amqp = require("amqplib");
 
-const RABBITMQ_URL = process.env.RABBITMQ_URL || "amqp//localhost:5672";
+const rabbitmq_url = process.env.RABBITMQ_URL || "amqp//localhost:5672";
 
-const PRODUCT_QUEUE = "product_queue";
+const product_queue = "product_queue";
 
 async function messageQueue() {
   try {
-    const connection = await amqp.connect(RABBITMQ_URL);
+    const connection = await amqp.connect(rabbitmq_url);
 
     const channel = await connection.createChannel();
 
-    await channel.assertQueue(PRODUCT_QUEUE, { durable: true });
+    await channel.assertQueue(product_queue, { durable: true });
 
-    channel.consume(PRODUCT_QUEUE, (payload) => {
+    channel.consume(product_queue, (payload) => {
       if (payload != null) {
         const message = payload.content.toString();
 
@@ -40,19 +40,19 @@ async function messageQueue() {
 function operation(product) {
   switch (product.operation) {
     case "CREATE":
-      postProduct(product);
+      productcontroller.post(product);
       break;
 
     case "PUT":
-      putProduct(product);
+      productcontroller.put(product);
       break;
 
     case "PATCH":
-      patchProduct(product);
+      productcontroller.patch(product);
       break;
 
     case "DELETE":
-      deleteProduct(product);
+      productcontroller.delete(product);
       break;
 
     default:
@@ -63,22 +63,6 @@ function operation(product) {
       });
       break;
   }
-}
-
-function postProduct(product) {
-  productcontroller.postProduct(product);
-}
-
-function putProduct(product) {
-  productcontroller.putProduct(product);
-}
-
-function patchProduct(product) {
-  productcontroller.patchProduct(product);
-}
-
-function deleteProduct(product) {
-  productcontroller.deleteProduct(product);
 }
 
 module.exports = { messageQueue };
