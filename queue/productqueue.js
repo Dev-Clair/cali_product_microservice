@@ -1,5 +1,5 @@
 const productcontroller = require("../controller/productcontroller");
-const logger = require("logger");
+const logger = require("./../service/logger");
 
 const amqp = require("amqplib");
 

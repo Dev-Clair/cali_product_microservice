@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
-const logger = require("logger");
+const logger = require("./service/logger");
 const productqueue = require("./queue/productqueue");
 const productrouter = require("./route/productrouter");
 
@@ -30,13 +30,14 @@ app.listen(port, () => {
       )
       .catch();
   } catch (error) {
-    // logger.log({
-    //   level: "error",
-    //   message: `${error.message}`,
-    // });
+    logger.log({
+      level: "error",
+      message: `${error.message}`,
+    });
   }
   // Log server start timestamp
-  // logger.log({
-  //   level: "info",
-  // });
+  logger.log({
+    level: "info",
+    message: new Date().now(),
+  });
 });
