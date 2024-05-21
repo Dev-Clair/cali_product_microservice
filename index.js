@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 
-dotenv.config(".env");
+dotenv.config(".env.local");
 
 const app = express();
 
