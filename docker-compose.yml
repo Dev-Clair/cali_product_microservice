@@ -12,8 +12,8 @@ services:
     volumes:
       - .:/product
       - /node_modules
-    command: "npm install && npm start"
+    command: "npm install && npm run dev"
     ports:
-      - "3000:3000"
+      - "80:3000"
     networks:
       - caliwears_network
