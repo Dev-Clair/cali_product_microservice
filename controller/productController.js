@@ -8,12 +8,12 @@ const app = express();
  */
 exports.getCollection = (req, res) => {
   // Retrieves product collection
-  productmodel;
+  productmodel.find();
 };
 
 exports.post = () => {
   // Creates a new product
-  productmodel;
+  productmodel.create();
 };
 
 /**
@@ -21,22 +21,22 @@ exports.post = () => {
  */
 exports.get = (req, res) => {
   // Retrieves an existing product using its :id / :slug
-  productmodel;
+  productmodel.findOne();
 };
 
 exports.put = () => {
   // Modifies an existing product (entirely) using its :id / :slug
-  productmodel;
+  productmodel.findByIdAndUpdate();
 };
 
 exports.patch = () => {
   // Modifies an existing product (partially) using its :id / :slug
-  productmodel;
+  productmodel.findByIdAndUpdate();
 };
 
 exports.delete = () => {
   // Removes an existing product using its :id / :slug
-  productmodel;
+  productmodel.findByIdAndDelete();
 };
 
 /**
@@ -44,5 +44,5 @@ exports.delete = () => {
  */
 exports.search = (req, res) => {
   // Retrieves an existing or collection of products based on search parameter
-  productmodel;
+  productmodel.find();
 };
