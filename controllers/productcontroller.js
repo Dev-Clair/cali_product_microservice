@@ -1,4 +1,4 @@
-const productmodel = require("../controllers/productcontroller");
+const productmodel = require("../models/productmodel");
 const logger = require("../service/loggerservice");
 
 /**
@@ -6,7 +6,7 @@ const logger = require("../service/loggerservice");
  * Collection Operations
  *
  */
-exports.getCollection = async (req, res) => {
+exports.getProducts = async (req, res) => {
   // Retrieves product collection
   try {
     const products = await productmodel.find();
@@ -25,14 +25,14 @@ exports.getCollection = async (req, res) => {
   }
 };
 
-exports.post = async (product) => {
+exports.postProduct = async (product) => {
   // Creates a new product
   try {
-    const product = await productmodel.create(product).then(() => {
-      logger.info(
-        `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
-      );
-    });
+    const product = await productmodel.create(product);
+
+    logger.info(
+      `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
+    );
   } catch (error) {
     logger.error("error", `${error.message}`);
   }
@@ -43,7 +43,7 @@ exports.post = async (product) => {
  * Item Operations
  *
  */
-exports.get = async (req, res) => {
+exports.getProduct = async (req, res) => {
   // Retrieves an existing product using its :id / :slug
   try {
     const product = await productmodel.findById();
@@ -62,7 +62,7 @@ exports.get = async (req, res) => {
   }
 };
 
-exports.put = async (product) => {
+exports.putProduct = async (product) => {
   // Modifies an existing product (entirely) using its :id / :slug
   try {
     const product = await productmodel.findOneAndUpdate(
@@ -79,7 +79,7 @@ exports.put = async (product) => {
   }
 };
 
-exports.patch = async (product) => {
+exports.patchProduct = async (product) => {
   // Modifies an existing product (partially) using its :id / :slug
   try {
     const product = await productmodel.findOneAndUpdate(
@@ -96,7 +96,7 @@ exports.patch = async (product) => {
   }
 };
 
-exports.delete = async (product) => {
+exports.deleteProduct = async (product) => {
   // Removes an existing product using its :id / :slug
   try {
     const product = await productmodel.findOneAndDelete({
@@ -116,7 +116,7 @@ exports.delete = async (product) => {
  * Hybrid Operations
  *
  */
-exports.getSearch = async (req, res) => {
+exports.getSearchProducts = async (req, res) => {
   // Retrieves an existing or collection of products based on search parameter
   try {
     const products = await productmodel.find();

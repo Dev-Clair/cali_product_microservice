@@ -1,4 +1,10 @@
-const productcontroller = require("../../controllers/productcontroller");
+const {
+  postProduct,
+  putProduct,
+  patchProduct,
+  removeProduct,
+  deleteProduct,
+} = require("../controllers/productcontroller");
 const logger = require("../service/loggerservice");
 
 const amqp = require("amqplib");
@@ -30,19 +36,19 @@ async function productqueue(rabbitmq_url, product_queue) {
 function operation(product) {
   switch (product.operation) {
     case "CREATE":
-      productcontroller.post(product);
+      postProduct(product);
       break;
 
     case "PUT":
-      productcontroller.patch(product);
+      patchProduct(product);
       break;
 
     case "PATCH":
-      productcontroller.patch(product);
+      patchProduct(product);
       break;
 
     case "DELETE":
-      productcontroller.delete(product);
+      deleteProduct(product);
       break;
 
     default:
