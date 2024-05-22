@@ -1,5 +1,5 @@
-const productmodel = require("./../model/productmodel");
-const logger = require("./../service/logger");
+const productmodel = require("../controllers/productcontroller");
+const logger = require("../service/logger");
 
 /**
  *
@@ -28,11 +28,11 @@ exports.getCollection = async (req, res) => {
 exports.post = async (product) => {
   // Creates a new product
   try {
-    const product = await productmodel.create(product);
-
-    logger.info(
-      `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
-    );
+    const product = await productmodel.create(product).then(() => {
+      logger.info(
+        `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
+      );
+    });
   } catch (error) {
     logger.error("error", `${error.message}`);
   }
