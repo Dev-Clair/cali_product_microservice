@@ -46,10 +46,9 @@ function operation(product) {
       break;
 
     default:
-      logger.info({
-        message: "Invalid Resource Operation",
-        data: { product },
-      });
+      logger.info(
+        `invalid ${product.operation} operation | product: ${product.product_id}`
+      );
       break;
   }
 }

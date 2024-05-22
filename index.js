@@ -24,6 +24,15 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("api/v1/products", productrouter);
 
+// Configure Logger Transport Based on Environment
+if (process.env.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
+}
+
 // Start Server, Database and Queue Processes
 app.listen(port, () => {
   try {
@@ -33,11 +42,15 @@ app.listen(port, () => {
         useUnifiedTopology: true,
       })
       .then(() => {
+        logger.info(`Starting ${product_queue} ...`);
+
         productqueue(rabbitmq_url, product_queue);
       });
   } catch (error) {
-    logger.error({ message: `${error.message}` });
+    logger.error(`${error.message}`);
   }
 
-  logger.info({ message: Date.now() });
+  logger.info(
+    `Server process started: ${Date.now()} | Listening on port: ${port}`
+  );
 });
