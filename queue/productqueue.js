@@ -23,10 +23,7 @@ async function productqueue(rabbitmq_url, product_queue) {
       }
     });
   } catch (error) {
-    logger.log({
-      level: "error",
-      message: `${error.message}`,
-    });
+    logger.error(`${error.message}`);
   }
 }
 
@@ -37,7 +34,7 @@ function operation(product) {
       break;
 
     case "PUT":
-      productcontroller.put(product);
+      productcontroller.patch(product);
       break;
 
     case "PATCH":
@@ -49,11 +46,10 @@ function operation(product) {
       break;
 
     default:
-      // logger.log({
-      //   level: "info",
-      //   message: "Invalid Resource Operation",
-      //   data: { product },
-      // });
+      logger.info({
+        message: "Invalid Resource Operation",
+        data: { product },
+      });
       break;
   }
 }
