@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
-const logger = require("./service/logger");
+const logger = require("./service/loggerservice");
 const productqueue = require("./queue/productqueue");
 const productrouter = require("./router/productrouter");
 

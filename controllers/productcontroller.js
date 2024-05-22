@@ -1,5 +1,5 @@
 const productmodel = require("../controllers/productcontroller");
-const logger = require("../service/logger");
+const logger = require("../service/loggerservice");
 
 /**
  *
