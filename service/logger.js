@@ -1,12 +1,21 @@
-const winston = require("winston");
+const { createLogger, format, transports } = require("winston");
+const { combine, timestamp, printf, colorize } = format;
 
-const logger = winston.createLogger({
+const logFormat = printf(({ level, message, timestamp }) => {
+  return `${timestamp} ${level.toUpperCase()}: ${message}`;
+});
+
+const logger = createLogger({
   level: "info",
-  format: winston.format.json(),
-  //   defaultMeta: { service: "user-service" },
+  format: combine(
+    timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+    colorize(),
+    logFormat
+  ),
   transports: [
-    new winston.transports.File({ filename: "error.log", level: "error" }),
-    new winston.transports.File({ filename: "combined.log" }),
+    new transports.Console(),
+    new transports.File({ filename: "./logs/error.log", level: "error" }),
+    new transports.File({ filename: "./logs/combined.log" }),
   ],
 });
 
