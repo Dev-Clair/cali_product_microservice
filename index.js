@@ -8,12 +8,6 @@ const productRouter = require("./router/productRouter");
 // Retrieve and Define Environment Variables
 dotenv.config(".env");
 
-const port = process.env.MONGO_PORT || 3000;
-
-const rabbitmq_url = process.env.RABBITMQ_URL || "amqp//localhost:5672";
-
-const product_queue = "product_queue";
-
 // Create an Express Application Instance
 const app = express();
 
@@ -22,7 +16,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("api/v1/products", productRouter);
+app.use("/api", productRouter);
 
 // Configure Logger Transport Based on Environment
 if (process.env.NODE_ENV !== "production") {
@@ -34,6 +28,14 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Start Server, Database and Queue Processes
+const port = process.env.MONGO_PORT || 3000;
+
+const rabbitmq_url = process.env.RABBITMQ_URL || "amqp//localhost:5672";
+
+const product_exchange = "product_exchange";
+
+const product_queue = "product_queue";
+
 app.listen(port, () => {
   try {
     mongoose
@@ -44,7 +46,11 @@ app.listen(port, () => {
       .then(() => {
         logger.info(`Starting ${product_queue} ...`);
 
-        productQueue(rabbitmq_url, product_queue);
+        productQueue.productQueue(
+          rabbitmq_url,
+          product_exchange,
+          product_queue
+        );
       });
   } catch (error) {
     logger.error("error", `${error.message}`);
