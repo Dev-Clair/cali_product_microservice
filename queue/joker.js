@@ -2,14 +2,13 @@ const {
   postProduct,
   putProduct,
   patchProduct,
-  removeProduct,
   deleteProduct,
-} = require("../controllers/productcontroller");
-const logger = require("../service/loggerservice");
+} = require("../controllers/productController");
+const logger = require("../service/loggerService");
 
 const amqp = require("amqplib");
 
-async function productqueue(rabbitmq_url, product_queue) {
+async function productQueue(rabbitmq_url, product_queue) {
   try {
     const connection = await amqp.connect(rabbitmq_url);
 
@@ -29,18 +28,22 @@ async function productqueue(rabbitmq_url, product_queue) {
       }
     });
   } catch (error) {
-    logger.error(`${error.message}`);
+    logger.error("error", `${error.message}`);
   }
 }
 
 function operation(product) {
-  switch (product.operation) {
+  const operation = product.operation;
+
+  const product = product.product;
+
+  switch (operation) {
     case "CREATE":
       postProduct(product);
       break;
 
     case "PUT":
-      patchProduct(product);
+      putProduct(product);
       break;
 
     case "PATCH":
@@ -53,10 +56,10 @@ function operation(product) {
 
     default:
       logger.info(
-        `invalid ${product.operation} operation | product: ${product.product_id}`
+        `invalid ${operation} operation | product ID: ${product.product_id}`
       );
       break;
   }
 }
 
-module.exports = { productqueue };
+module.exports = { productQueue };
