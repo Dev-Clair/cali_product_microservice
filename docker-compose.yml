@@ -6,14 +6,14 @@ networks:
 
 services:
   node:
-    image: "node:20-alpine"
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: "caliwears_product_service"
-    working_dir: /product
     volumes:
       - .:/product
-      - /node_modules
-    command: "npm install && npm run dev"
+      - ./product/node_modules
     ports:
-      - "80:3000"
+      - "3000:3000"
     networks:
       - caliwears_network
