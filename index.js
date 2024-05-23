@@ -1,9 +1,9 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
-const logger = require("./service/loggerservice");
-const productqueue = require("./queue/productqueue");
-const productrouter = require("./router/productrouter");
+const logger = require("./service/loggerService");
+const productQueue = require("./queue/productQueue");
+const productRouter = require("./router/productRouter");
 
 // Retrieve and Define Environment Variables
 dotenv.config(".env");
@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("api/v1/products", productrouter);
+app.use("api/v1/products", productRouter);
 
 // Configure Logger Transport Based on Environment
 if (process.env.NODE_ENV !== "production") {
@@ -44,10 +44,10 @@ app.listen(port, () => {
       .then(() => {
         logger.info(`Starting ${product_queue} ...`);
 
-        productqueue(rabbitmq_url, product_queue);
+        productQueue(rabbitmq_url, product_queue);
       });
   } catch (error) {
-    logger.error(`${error.message}`);
+    logger.error("error", `${error.message}`);
   }
 
   logger.info(

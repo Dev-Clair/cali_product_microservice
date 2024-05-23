@@ -1,5 +1,5 @@
-const productmodel = require("../models/productmodel");
-const logger = require("../service/loggerservice");
+const productmodel = require("../models/productModel");
+const logger = require("../service/loggerService");
 
 /**
  *
@@ -12,14 +12,14 @@ exports.getProducts = async (req, res) => {
     const products = await productmodel.find();
 
     res.status(200).json({
-      result: products.length(),
+      result: products.length,
       products: products,
     });
   } catch (error) {
     logger.error("error", `${error.message}`);
 
     res.status(500).json({
-      result: products.length(),
+      result: products.length,
       error: error,
     });
   }
@@ -56,7 +56,7 @@ exports.getProduct = async (req, res) => {
     logger.error(`${error.message}`);
 
     res.status(500).json({
-      result: product.length(),
+      result: product.length,
       error: error,
     });
   }
