@@ -9,4 +9,4 @@ productRouter.get("/v1/products/search?", productController.getSearchProducts);
 
 productRouter.get("/v1/products/:id", productController.getProduct);
 
-module.exports = productRouter();
+module.exports = { productRouter };

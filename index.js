@@ -16,19 +16,10 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api", productRouter);
-
-// Configure Logger Transport Based on Environment
-if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  );
-}
+app.use("/api", productRouter.productRouter);
 
 // Start Server, Database and Queue Processes
-const port = process.env.MONGO_PORT || 3000;
+const port = process.env.PORT || 4000;
 
 const rabbitmq_url = process.env.RABBITMQ_URL || "amqp//localhost:5672";
 
@@ -36,27 +27,24 @@ const product_exchange = "product_exchange";
 
 const product_queue = "product_queue";
 
-app.listen(port, () => {
+app.listen(port, async () => {
   try {
-    mongoose
-      .connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      })
-      .then(() => {
-        logger.info(`Starting ${product_queue} ...`);
+    await mongoose.connect(process.env.MONGO_URI);
 
-        productQueue.productQueue(
-          rabbitmq_url,
-          product_exchange,
-          product_queue
-        );
-      });
+    logger.info(`////////////////////////////////////////////////`);
+    logger.info(`Connected to MongoDB`);
+
+    logger.info(`${product_queue} consumer started`);
+    await productQueue.productQueue(
+      rabbitmq_url,
+      product_exchange,
+      product_queue
+    );
+
+    logger.info(
+      `Server process started: ${Date.now()} | Listening on port: ${port}`
+    );
   } catch (error) {
-    logger.error("error", `${error.message}`);
+    logger.error(`Error: ${error.message}`);
   }
-
-  logger.info(
-    `Server process started: ${Date.now()} | Listening on port: ${port}`
-  );
 });
