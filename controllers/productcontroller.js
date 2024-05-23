@@ -3,7 +3,7 @@ const logger = require("../service/loggerService");
 
 /**
  *
- * Collection Operations
+ * Collection Operation
  *
  */
 exports.getProducts = async (req, res) => {
@@ -25,6 +25,11 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+/**
+ *
+ * Collection Operation
+ *
+ */
 exports.postProduct = async (product) => {
   // Creates a new product
   try {
@@ -40,7 +45,7 @@ exports.postProduct = async (product) => {
 
 /**
  *
- * Item Operations
+ * Item Operation
  *
  */
 exports.getProduct = async (req, res) => {
@@ -62,6 +67,11 @@ exports.getProduct = async (req, res) => {
   }
 };
 
+/**
+ *
+ * Item Operation
+ *
+ */
 exports.putProduct = async (product) => {
   // Modifies an existing product (entirely) using its :id / :slug
   try {
@@ -79,6 +89,11 @@ exports.putProduct = async (product) => {
   }
 };
 
+/**
+ *
+ * Item Operation
+ *
+ */
 exports.patchProduct = async (product) => {
   // Modifies an existing product (partially) using its :id / :slug
   try {
@@ -96,6 +111,11 @@ exports.patchProduct = async (product) => {
   }
 };
 
+/**
+ *
+ * Item Operation
+ *
+ */
 exports.deleteProduct = async (product) => {
   // Removes an existing product using its :id / :slug
   try {
@@ -113,7 +133,7 @@ exports.deleteProduct = async (product) => {
 
 /**
  *
- * Hybrid Operations
+ * Hybrid Operation
  *
  */
 exports.getSearchProducts = async (req, res) => {
