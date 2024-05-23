@@ -65,7 +65,7 @@ exports.getProduct = async (req, res) => {
 exports.putProduct = async (product) => {
   // Modifies an existing product (entirely) using its :id / :slug
   try {
-    const product = await productmodel.findOneAndUpdate(
+    const product = await productmodel.findOneAndReplace(
       { product_id: product.product_id },
       product,
       { new: true }
@@ -119,7 +119,9 @@ exports.deleteProduct = async (product) => {
 exports.getSearchProducts = async (req, res) => {
   // Retrieves an existing or collection of products based on search parameter
   try {
-    const products = await productmodel.find();
+    const products = await productmodel.find({
+      $text: { $search: req.query.q },
+    });
 
     res.status(200).json({
       result: products.length,
