@@ -1,9 +1,4 @@
-const {
-  postProduct,
-  putProduct,
-  patchProduct,
-  deleteProduct,
-} = require("../controllers/productController");
+const productController = require("../controllers/productController");
 const logger = require("../service/loggerService");
 
 const amqp = require("amqplib");
@@ -45,19 +40,19 @@ async function operation(product) {
 
   switch (operation) {
     case "CREATE":
-      await postProduct(product_data);
+      await productController.postProduct(product_data);
       break;
 
     case "PUT":
-      await putProduct(product_data);
+      await productController.putProduct(product_data);
       break;
 
     case "PATCH":
-      await patchProduct(product_data);
+      await productController.patchProduct(product_data);
       break;
 
     case "DELETE":
-      await deleteProduct(product_data);
+      await productController.deleteProduct(product_data);
       break;
 
     default:
