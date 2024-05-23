@@ -6,45 +6,49 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "A product must have a product ID"],
   },
-  name: {
+  product_name: {
     type: String,
     trim: true,
     required: [true, "A product must have a name"],
   },
-  description: {
+  product_description: {
     type: String,
     trim: true,
     required: [true, "A product must have a description"],
   },
-  slug: {
+  product_slug: {
     type: String,
     unique: true,
     required: [true, "A product must have a slug"],
   },
-  price: {
+  product_price: {
     type: mongoose.Decimal128,
     required: [true, "A product must have a price"],
   },
-  status: {
+  product_stock_quantity: {
+    type: Number,
+    required: [true, "A product must have a stock_quantity"],
+  },
+  product_status: {
     type: String,
     trim: true,
     required: [true, "A product must have a status"],
   },
-  warranty: {
+  product_warranty: {
     type: String,
     trim: true,
   },
-  colors: [String],
-  sizes: [String],
-  weight: {
+  product_colors: [String],
+  product_sizes: [String],
+  product_weight: {
     type: String,
     trim: true,
   },
-  image_path: {
+  product_image_path: {
     type: String,
     trim: true,
   },
-  category: {
+  product_category: {
     type: String,
     trim: true,
     required: [true, "A product must have a category"],
