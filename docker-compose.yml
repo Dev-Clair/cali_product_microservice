@@ -12,7 +12,7 @@ services:
     container_name: "caliwears_product_service"
     volumes:
       - .:/product
-      - ./product/node_modules
+      - ./node_modules:/product
     ports:
       - "3000:3000"
     networks:
