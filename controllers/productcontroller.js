@@ -18,9 +18,7 @@ exports.getProducts = async (req, res) => {
   } catch (error) {
     logger.error("error", `${error.message}`);
 
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -36,9 +34,7 @@ exports.postProducts = async (req, res) => {
   } catch (error) {
     logger.error("error", `${error.message}`);
 
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -53,7 +49,7 @@ exports.createProduct = async (product) => {
     const product = await productmodel.create(product);
 
     logger.info(
-      `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
+      `success | action: CREATE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
     logger.warn("error", `${error.message}`);
@@ -68,18 +64,13 @@ exports.createProduct = async (product) => {
 exports.getProduct = async (req, res) => {
   // Retrieves an existing product using its :id / :slug
   try {
-    const product = await productmodel.findById(req.param.id);
+    const product = await productmodel.findById({ _id: req.params.id });
 
-    res.status(200).json({
-      count: product.length,
-      product: product,
-    });
+    res.status(200).json({ product: product });
   } catch (error) {
     logger.error(`${error.message}`);
 
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -98,7 +89,7 @@ exports.replaceProduct = async (product) => {
     );
 
     logger.info(
-      `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
+      `success | action: REPLACE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
     logger.warn("error", `${error.message}`);
@@ -120,7 +111,7 @@ exports.updateProduct = async (product) => {
     );
 
     logger.info(
-      `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
+      `success | action: UPDATE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
     logger.warn("error", `${error.message}`);
@@ -140,7 +131,7 @@ exports.removeProduct = async (product) => {
     });
 
     logger.info(
-      `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
+      `success | action: REMOVE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
     logger.warn("error", `${error.message}`);
@@ -155,8 +146,8 @@ exports.removeProduct = async (product) => {
 exports.getSearchProducts = async (req, res) => {
   // Retrieves an existing or collection of products based on search parameter
   try {
-    const products = await productmodel.find({
-      $text: { $search: req.query.q },
+    const products = await productmodel.findOne({
+      $text: { $search: req.query.q, $caseSensitive: false },
     });
 
     res.status(200).json({
@@ -166,8 +157,6 @@ exports.getSearchProducts = async (req, res) => {
   } catch (error) {
     logger.error("error", `${error.message}`);
 
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 };
