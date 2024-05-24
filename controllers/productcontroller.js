@@ -12,15 +12,32 @@ exports.getProducts = async (req, res) => {
     const products = await productmodel.find();
 
     res.status(200).json({
-      result: products.length,
+      count: products.length,
       products: products,
     });
   } catch (error) {
     logger.error("error", `${error.message}`);
 
     res.status(500).json({
-      result: products.length,
-      error: error,
+      error: error.message,
+    });
+  }
+};
+
+exports.postProducts = async (req, res) => {
+  // Saves a product to collection
+  try {
+    const products = await productmodel.create(req.body);
+
+    res.status(200).json({
+      count: products.length,
+      products: products,
+    });
+  } catch (error) {
+    logger.error("error", `${error.message}`);
+
+    res.status(500).json({
+      error: error.message,
     });
   }
 };
@@ -39,7 +56,7 @@ exports.createProduct = async (product) => {
       `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    logger.error("error", `${error.message}`);
+    logger.warn("error", `${error.message}`);
   }
 };
 
@@ -51,18 +68,17 @@ exports.createProduct = async (product) => {
 exports.getProduct = async (req, res) => {
   // Retrieves an existing product using its :id / :slug
   try {
-    const product = await productmodel.findById();
+    const product = await productmodel.findById(req.param.id);
 
     res.status(200).json({
-      result: product.length,
+      count: product.length,
       product: product,
     });
   } catch (error) {
     logger.error(`${error.message}`);
 
     res.status(500).json({
-      result: product.length,
-      error: error,
+      error: error.message,
     });
   }
 };
@@ -85,7 +101,7 @@ exports.replaceProduct = async (product) => {
       `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    logger.error("error", `${error.message}`);
+    logger.warn("error", `${error.message}`);
   }
 };
 
@@ -107,7 +123,7 @@ exports.updateProduct = async (product) => {
       `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    logger.error("error", `${error.message}`);
+    logger.warn("error", `${error.message}`);
   }
 };
 
@@ -127,7 +143,7 @@ exports.removeProduct = async (product) => {
       `success | action: ${product.action} | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    logger.error("error", `${error.message}`);
+    logger.warn("error", `${error.message}`);
   }
 };
 
@@ -144,15 +160,14 @@ exports.getSearchProducts = async (req, res) => {
     });
 
     res.status(200).json({
-      result: products.length,
+      count: products.length,
       products: products,
     });
   } catch (error) {
     logger.error("error", `${error.message}`);
 
     res.status(500).json({
-      result: products.length,
-      error: error,
+      error: error.message,
     });
   }
 };
