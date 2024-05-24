@@ -28,6 +28,7 @@ const productSchema = new mongoose.Schema(
     product_stock_quantity: {
       type: Number,
       required: [true, "A product must have a stock_quantity"],
+      select: false,
     },
     product_warranty: {
       type: String,
@@ -57,8 +58,11 @@ const productSchema = new mongoose.Schema(
 
 // Document Middleware
 productSchema.pre("save", function (next) {
-  if (this.name) {
-    this.slug = slugify(this.name, { lower: true, strict: true });
+  if (this.product_name) {
+    this.product_slug = slugify(this.product_name, {
+      lower: true,
+      strict: true,
+    });
   }
   next();
 });
