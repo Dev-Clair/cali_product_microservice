@@ -30,7 +30,7 @@ exports.getProducts = async (req, res) => {
  * Collection Operation
  *
  */
-exports.postProduct = async (product) => {
+exports.createProduct = async (product) => {
   // Creates a new product
   try {
     const product = await productmodel.create(product);
@@ -72,7 +72,7 @@ exports.getProduct = async (req, res) => {
  * Item Operation
  *
  */
-exports.putProduct = async (product) => {
+exports.replaceProduct = async (product) => {
   // Modifies an existing product (entirely) using its :id / :slug
   try {
     const product = await productmodel.findOneAndReplace(
@@ -94,7 +94,7 @@ exports.putProduct = async (product) => {
  * Item Operation
  *
  */
-exports.patchProduct = async (product) => {
+exports.updateProduct = async (product) => {
   // Modifies an existing product (partially) using its :id / :slug
   try {
     const product = await productmodel.findOneAndUpdate(
@@ -116,7 +116,7 @@ exports.patchProduct = async (product) => {
  * Item Operation
  *
  */
-exports.deleteProduct = async (product) => {
+exports.removeProduct = async (product) => {
   // Removes an existing product using its :id / :slug
   try {
     const product = await productmodel.findOneAndDelete({

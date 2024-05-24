@@ -1,21 +1,24 @@
+const amqp = require("amqplib");
 const productController = require("../controllers/productController");
 const logger = require("../service/loggerService");
 
-const amqp = require("amqplib");
-
-async function productQueue(rabbitmq_url, product_exchange, product_queue) {
+async function productQueue(
+  rabbitmq_url,
+  product_exchange = null,
+  product_queue
+) {
   try {
     const connection = await amqp.connect(rabbitmq_url);
 
     const channel = await connection.createChannel();
 
-    await channel.assertExchange(product_exchange, "direct", { durable: true });
-
-    await channel.assertQueue(product_queue, { durable: true });
-
-    await channel.bindQueue(product_queue, product_exchange, "");
+    // await channel.assertExchange(product_exchange, "direct", { durable: true });
 
     // await channel.assertQueue(product_queue, { durable: true });
+
+    // await channel.bindQueue(product_queue, product_exchange, "");
+
+    await channel.assertQueue(product_queue, { durable: true });
 
     channel.consume(product_queue, async (payload) => {
       if (payload != null) {
@@ -28,6 +31,10 @@ async function productQueue(rabbitmq_url, product_exchange, product_queue) {
         channel.ack(payload);
       }
     });
+    setTimeout(() => {
+      channel.close();
+      connection.close();
+    }, 600);
   } catch (error) {
     logger.error("error", `${error.message}`);
   }
@@ -40,19 +47,19 @@ async function operation(product) {
 
   switch (operation) {
     case "CREATE":
-      await productController.postProduct(product_data);
+      await productController.createProduct(product_data);
       break;
 
     case "PUT":
-      await productController.putProduct(product_data);
+      await productController.replaceProduct(product_data);
       break;
 
     case "PATCH":
-      await productController.patchProduct(product_data);
+      await productController.updateProduct(product_data);
       break;
 
     case "DELETE":
-      await productController.deleteProduct(product_data);
+      await productController.removeProduct(product_data);
       break;
 
     default:
@@ -64,52 +71,3 @@ async function operation(product) {
 }
 
 module.exports = { productQueue };
-
-// const amqp = require('amqplib');
-// const productController = require('./controllers/productController');
-// const logger = require('./service/logger');
-
-// async function consumeMessages() {
-//   try {
-//     const connection = await amqp.connect(process.env.RABBITMQ_URL);
-//     const channel = await connection.createChannel();
-
-//     const queue = 'product_queue';
-//     const exchange = 'product_exchange';
-
-//     await channel.assertExchange(exchange, 'direct', { durable: true });
-//     await channel.assertQueue(queue, { durable: true });
-//     await channel.bindQueue(queue, exchange, '');
-
-//     channel.consume(queue, async (msg) => {
-//       if (msg !== null) {
-//         const message = JSON.parse(msg.content.toString());
-//         await handleOperation(message);
-//         channel.ack(msg);
-//       }
-//     });
-
-//     logger.info('Consumer is up and running');
-//   } catch (error) {
-//     logger.error(`RabbitMQ consumer error: ${error.message}`);
-//   }
-// }
-
-// async function handleOperation(product) {
-//   switch (product.operation) {
-//     case 'CREATE':
-//       await productController.createProduct(product);
-//       break;
-//     case 'UPDATE':
-//       await productController.updateProduct(product);
-//       break;
-//     case 'DELETE':
-//       await productController.deleteProduct(product);
-//       break;
-//     default:
-//       logger.error(`Invalid operation: ${product.operation}`);
-//       break;
-//   }
-// }
-
-// consumeMessages();
