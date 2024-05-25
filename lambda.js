@@ -1,10 +1,10 @@
 const dotenv = require("dotenv");
-const productQueueConsumer = require("./productQueueConsumer");
-const databaseService = require("../service/databaseService");
-const { queueLogger } = require("../service/loggerService");
+const productQueueConsumer = require("./queue/productQueueConsumer");
+const databaseService = require("./service/databaseService");
+const { queueLogger } = require("./service/loggerService");
 
 // Load Environment Variables
-dotenv.config("../.env");
+dotenv.config(".env");
 
 exports.handler = async (event) => {
   for (const record of event.Records) {
