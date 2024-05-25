@@ -14,8 +14,8 @@ const apiLogger = createLogger({
   ),
   transports: [
     new transports.Console(),
-    new transports.File({ filename: "./api/logs/error.log", level: "error" }),
     new transports.File({ filename: "./api/logs/combined.log" }),
+    new transports.File({ filename: "./api/logs/error.log", level: "error" }),
   ],
 });
 
