@@ -6,7 +6,6 @@ const productRouter = express.Router();
 productRouter
   .route("/")
   .get(productController.retrieveProducts)
-  // .get(productController.searchProducts)
   .post(productController.methodNotAllowed);
 
 productRouter.route("/info").get(productController.retrieveApiInfo);
