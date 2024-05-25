@@ -15,7 +15,7 @@ exports.createProduct = async (product) => {
       `success | action: CREATE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    queueLogger.warn("error", `${error.message}`);
+    queueLogger.error(`${error.message}`);
   }
 };
 
@@ -37,7 +37,7 @@ exports.replaceProduct = async (product) => {
       `success | action: REPLACE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    queueLogger.warn("error", `${error.message}`);
+    queueLogger.error(`${error.message}`);
   }
 };
 
@@ -59,7 +59,7 @@ exports.updateProduct = async (product) => {
       `success | action: UPDATE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    queueLogger.warn("error", `${error.message}`);
+    queueLogger.error(`${error.message}`);
   }
 };
 
@@ -79,6 +79,6 @@ exports.removeProduct = async (product) => {
       `success | action: REMOVE | product name: ${product.name} | product id: ${product.product_id}`
     );
   } catch (error) {
-    queueLogger.warn("error", `${error.message}`);
+    queueLogger.error(`${error.message}`);
   }
 };

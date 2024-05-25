@@ -24,7 +24,8 @@ async function productQueueConsumer(message) {
       break;
 
     default:
-      queueLogger.info(
+      queueLogger.error(
+        "error",
         `invalid ${operation} operation | product ID: ${product.product_id}`
       );
       break;
