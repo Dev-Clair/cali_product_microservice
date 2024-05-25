@@ -5,7 +5,7 @@ const logFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
-const logger = createLogger({
+const apiLogger = createLogger({
   level: "info",
   format: combine(
     timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
@@ -19,4 +19,17 @@ const logger = createLogger({
   ],
 });
 
-module.exports = logger;
+const queueLogger = createLogger({
+  level: "info",
+  format: combine(
+    timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+    colorize(),
+    logFormat
+  ),
+  transports: [
+    new transports.File({ filename: "./queue/logs/combined.log" }),
+    new transports.File({ filename: "./queue/logs/error.log", level: "error" }),
+  ],
+});
+
+module.exports = { apiLogger, queueLogger };
