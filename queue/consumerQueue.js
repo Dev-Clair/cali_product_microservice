@@ -1,7 +1,7 @@
-const productController = require("../queue/controllers/productController");
+const productController = require("./controllers/productController");
 const { queueLogger } = require("../service/loggerService");
 
-async function productQueueConsumer(message) {
+async function consumerQueue(message) {
   const operation = message.operation;
 
   const product = message.product;
@@ -25,11 +25,10 @@ async function productQueueConsumer(message) {
 
     default:
       queueLogger.error(
-        "error",
         `invalid ${operation} operation | product ID: ${product.product_id}`
       );
       break;
   }
 }
 
-module.exports = { productQueueConsumer };
+module.exports = { consumerQueue };
