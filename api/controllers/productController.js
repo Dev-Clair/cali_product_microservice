@@ -50,8 +50,8 @@ exports.retrieveProducts = async (req, res) => {
  * Collection Operation
  *
  */
-exports.createProducts = async (req, res) => {
-  // Saves a product to collection
+exports.createProducts = (req, res) => {
+  // Saves a product to the collection
   res.status(405).json({ status: "Method Not Allowed" });
 };
 
@@ -78,7 +78,7 @@ exports.retrieveProduct = async (req, res) => {
  * Item Operation
  *
  */
-exports.replaceProduct = async (req, res) => {
+exports.replaceProduct = (req, res) => {
   // Modifies an existing product (entirely) using its :id / :slug
   res.status(405).json({ status: "Method Not Allowed" });
 };
@@ -88,7 +88,7 @@ exports.replaceProduct = async (req, res) => {
  * Item Operation
  *
  */
-exports.updateProduct = async (req, res) => {
+exports.updateProduct = (req, res) => {
   // Modifies an existing product (partially) using its :id / :slug
   res.status(405).json({ status: "Method Not Allowed" });
 };
