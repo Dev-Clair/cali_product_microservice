@@ -28,7 +28,7 @@ const productSchema = new mongoose.Schema(
     product_stock_quantity: {
       type: Number,
       required: [true, "A product must have a stock_quantity"],
-      select: false,
+      select: true,
     },
     product_warranty: {
       type: String,
