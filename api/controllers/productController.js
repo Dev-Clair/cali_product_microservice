@@ -1,5 +1,5 @@
 const productModel = require("../models/productModel");
-const logger = require("../../service/loggerService");
+const { apiLogger } = require("../../service/loggerService");
 
 /**
  *
@@ -12,7 +12,7 @@ exports.retrieveApiInfo = (req, res) => {
     name: "cali_product_microservice",
     version: "1.0.0",
     collection_operations: {
-      path: "api/v1/products?search=",
+      path: "api/v1/products/search?q=",
       allowed: ["GET"],
       not_allowed: ["POST"],
     },
@@ -39,7 +39,7 @@ exports.retrieveProducts = async (req, res, next) => {
       products: products,
     });
   } catch (error) {
-    logger.error("error", `${error.message}`);
+    apiLogger.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
@@ -62,7 +62,7 @@ exports.searchProducts = async (req, res, next) => {
       products: products,
     });
   } catch (error) {
-    logger.error("error", `${error.message}`);
+    apiLogger.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
@@ -86,7 +86,7 @@ exports.retrieveProduct = async (req, res, next) => {
 
     res.status(200).json({ product: product });
   } catch (error) {
-    logger.error(`${error.message}`);
+    apiLogger.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }

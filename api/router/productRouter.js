@@ -6,10 +6,12 @@ const productRouter = express.Router();
 productRouter
   .route("/")
   .get(productController.retrieveProducts)
-  .get(productController.searchProducts)
+  // .get(productController.searchProducts)
   .post(productController.methodNotAllowed);
 
 productRouter.route("/info").get(productController.retrieveApiInfo);
+
+productRouter.route("/search?q=").get(productController.searchProducts);
 
 productRouter
   .route("/:id")
