@@ -7,15 +7,15 @@ productRouter
   .route("/")
   .get(productController.retrieveProducts)
   .get(productController.searchProducts)
-  .post(productController.createProducts);
+  .post(productController.methodNotAllowed);
 
 productRouter.route("/info").get(productController.retrieveApiInfo);
 
 productRouter
   .route("/:id")
   .get(productController.retrieveProduct)
-  .put(productController.replaceProduct)
-  .patch(productController.updateProduct)
-  .delete(productController.removeProduct);
+  .put(productController.methodNotAllowed)
+  .patch(productController.methodNotAllowed)
+  .delete(productController.methodNotAllowed);
 
 module.exports = { productRouter };

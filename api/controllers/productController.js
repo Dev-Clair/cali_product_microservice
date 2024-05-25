@@ -29,7 +29,7 @@ exports.retrieveApiInfo = (req, res) => {
  * Collection Operation
  *
  */
-exports.retrieveProducts = async (req, res) => {
+exports.retrieveProducts = async (req, res, next) => {
   // Retrieves product collection
   try {
     const products = await productmodel.find();
@@ -50,65 +50,7 @@ exports.retrieveProducts = async (req, res) => {
  * Collection Operation
  *
  */
-exports.createProducts = (req, res) => {
-  // Saves a product to the collection
-  res.status(405).json({ status: "Method Not Allowed" });
-};
-
-/**
- *
- * Item Operation
- *
- */
-exports.retrieveProduct = async (req, res) => {
-  // Retrieves an existing product using its :id / :slug
-  try {
-    const product = await productmodel.findById({ _id: req.params.id });
-
-    res.status(200).json({ product: product });
-  } catch (error) {
-    logger.error(`${error.message}`);
-
-    res.status(500).json({ error: error.message });
-  }
-};
-
-/**
- *
- * Item Operation
- *
- */
-exports.replaceProduct = (req, res) => {
-  // Modifies an existing product (entirely) using its :id / :slug
-  res.status(405).json({ status: "Method Not Allowed" });
-};
-
-/**
- *
- * Item Operation
- *
- */
-exports.updateProduct = (req, res) => {
-  // Modifies an existing product (partially) using its :id / :slug
-  res.status(405).json({ status: "Method Not Allowed" });
-};
-
-/**
- *
- * Item Operation
- *
- */
-exports.removeProduct = async (req, res) => {
-  // Removes an existing product using its :id / :slug
-  res.status(405).json({ status: "Method Not Allowed" });
-};
-
-/**
- *
- * Hybrid Operation
- *
- */
-exports.searchProducts = async (req, res) => {
+exports.searchProducts = async (req, res, next) => {
   // Retrieves an existing or collection of products based on search parameter
   try {
     const products = await productmodel.findOne({
@@ -124,4 +66,37 @@ exports.searchProducts = async (req, res) => {
 
     res.status(500).json({ error: error.message });
   }
+};
+
+/**
+ *
+ * Item Operation
+ *
+ */
+exports.retrieveProduct = async (req, res, next) => {
+  // Retrieves an existing product using its :id / :slug
+  try {
+    const product = await productmodel.findById({ _id: req.params.id });
+
+    if (!product) {
+      res
+        .status(404)
+        .json({ message: `No product found for id: ${req.params.id}` });
+    }
+
+    res.status(200).json({ product: product });
+  } catch (error) {
+    logger.error(`${error.message}`);
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
+/**
+ *
+ * Not allowed Operation: POST | PUT | PATCH | DELETE
+ *
+ */
+exports.methodNotAllowed = (req, res, next) => {
+  res.status(405).json({ message: "Method Not Allowed" });
 };

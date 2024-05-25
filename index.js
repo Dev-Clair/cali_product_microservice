@@ -20,7 +20,10 @@ app.use("/api/v1/products", productRouter.productRouter);
 app.all("*", (req, res) => {
   res
     .status(404)
-    .json({ status: `No resource or route defined for ${req.originalUrl}` });
+    .json({
+      status: `Not Found`,
+      message: `No resource or route defined for ${req.originalUrl}`,
+    });
 });
 
 // Start Server and Database Processes
