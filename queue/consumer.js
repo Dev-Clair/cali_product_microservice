@@ -1,7 +1,7 @@
 const productController = require("./controllers/productController");
 const { queueLogger } = require("../service/loggerService");
 
-async function consumerQueue(message) {
+async function consumer(message) {
   const operation = message.operation;
 
   const product = message.product;
@@ -31,4 +31,4 @@ async function consumerQueue(message) {
   }
 }
 
-module.exports = { consumerQueue };
+module.exports = { consumer };
