@@ -1,4 +1,4 @@
-const productmodel = require("../models/productModel");
+const productModel = require("../models/productModel");
 const logger = require("../../service/loggerService");
 
 /**
@@ -32,7 +32,7 @@ exports.retrieveApiInfo = (req, res) => {
 exports.retrieveProducts = async (req, res, next) => {
   // Retrieves product collection
   try {
-    const products = await productmodel.find();
+    const products = await productModel.find();
 
     res.status(200).json({
       count: products.length,
@@ -53,7 +53,7 @@ exports.retrieveProducts = async (req, res, next) => {
 exports.searchProducts = async (req, res, next) => {
   // Retrieves an existing or collection of products based on search parameter
   try {
-    const products = await productmodel.findOne({
+    const products = await productModel.findOne({
       $text: { $search: req.query.q, $caseSensitive: false },
     });
 
@@ -76,7 +76,7 @@ exports.searchProducts = async (req, res, next) => {
 exports.retrieveProduct = async (req, res, next) => {
   // Retrieves an existing product using its :id / :slug
   try {
-    const product = await productmodel.findById({ _id: req.params.id });
+    const product = await productModel.findById({ _id: req.params.id });
 
     if (!product) {
       res
