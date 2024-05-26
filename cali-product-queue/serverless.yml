@@ -10,9 +10,9 @@ provider:
 
 functions:
   producer:
-    handler: handler.consumer
+    handler: handler.handle
     events:
-      - sqs: arn:aws:sqs:${aws:region}:${aws:accountId}:Cali_Product_Queue
+      - sqs: arn:aws:sqs:af-south-1:654654412540:Cali_Product_Queue
 
 resources:
   Resources:
