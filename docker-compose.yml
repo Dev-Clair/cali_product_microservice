@@ -1,0 +1,19 @@
+version: "3.7"
+
+networks:
+  caliwears_network:
+    driver: bridge
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "caliwears_product_service"
+    volumes:
+      - .:/product
+      - ./node_modules:/product
+    ports:
+      - "4000:3000"
+    networks:
+      - caliwears_network
