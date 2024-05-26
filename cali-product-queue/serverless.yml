@@ -1,0 +1,22 @@
+org: clair99
+
+app: product-microservice
+
+service: cali-product-queue
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+
+functions:
+  producer:
+    handler: handler.consumer
+    events:
+      - sqs: arn:aws:sqs:${aws:region}:${aws:accountId}:Cali_Product_Queue
+
+resources:
+  Resources:
+    JobQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: Cali_Product_Queue
