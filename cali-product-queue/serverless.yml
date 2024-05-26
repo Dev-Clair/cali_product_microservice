@@ -8,6 +8,15 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: af-south-1
+  memorySize: 512MB
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:GetQueueAttributes
 
 functions:
   producer:
