@@ -18,4 +18,4 @@ const queueLogger = createLogger({
   ],
 });
 
-module.exports = { apiLogger, queueLogger };
+module.exports = { queueLogger };
