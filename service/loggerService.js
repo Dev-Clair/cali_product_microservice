@@ -19,17 +19,4 @@ const apiLogger = createLogger({
   ],
 });
 
-const queueLogger = createLogger({
-  level: "info",
-  format: combine(
-    timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    colorize(),
-    logFormat
-  ),
-  transports: [
-    new transports.File({ filename: "./queue/logs/error.log", level: "error" }),
-    new transports.File({ filename: "./queue/logs/combined.log" }),
-  ],
-});
-
-module.exports = { apiLogger, queueLogger };
+module.exports = { apiLogger };
