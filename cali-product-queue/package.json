@@ -1,6 +1,10 @@
 {
   "name": "cali-product-queue",
   "version": "1.0.0",
+  "scripts": {
+    "start": "",
+    "dev": "serverless deploy"
+  },
   "description": "Serverless Framework Node SQS Producer-Consumer on AWS",
   "author": "Aniogbu Samuel",
   "license": "MIT",
