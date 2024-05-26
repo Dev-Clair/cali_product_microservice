@@ -1,4 +1,4 @@
-const productController = require("./controllers/productController");
+const Product = require("./model/productModel");
 const { queueLogger } = require("../service/loggerService");
 
 async function consumer(message) {
@@ -8,19 +8,45 @@ async function consumer(message) {
 
   switch (operation) {
     case "POST":
-      await productController.createProduct(product);
+      await Product.create(product);
+
+      queueLogger.info(
+        `success | action: POST | product name: ${product.name} | product id: ${product.product_id}`
+      );
       break;
 
     case "PUT":
-      await productController.replaceProduct(product);
+      await Product.findOneAndUpdate(
+        { product_id: product.product_id },
+        product,
+        { new: true }
+      );
+
+      queueLogger.info(
+        `success | action: PUT | product name: ${product.name} | product id: ${product.product_id}`
+      );
       break;
 
     case "PATCH":
-      await productController.updateProduct(product);
+      await Product.findOneAndUpdate(
+        { product_id: product.product_id },
+        product,
+        { new: true }
+      );
+
+      queueLogger.info(
+        `success | action: PATCH | product name: ${product.name} | product id: ${product.product_id}`
+      );
       break;
 
     case "DELETE":
-      await productController.removeProduct(product);
+      await Product.findOneAndDelete({
+        product_id: product.product_id,
+      });
+
+      queueLogger.info(
+        `success | action: DELETE | product name: ${product.name} | product id: ${product.product_id}`
+      );
       break;
 
     default:
