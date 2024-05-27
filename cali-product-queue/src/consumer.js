@@ -8,13 +8,11 @@ dotenv.config(".env");
 const consumer = async (messageString) => {
   const message = JSON.parse(messageString);
 
-  console.log(message);
-
   const operation = message.operation;
 
   const product = message.product;
 
-  const connectionString = process.env.MONGO_URI || "";
+  const connectionString = process.env.MONGO_URI;
 
   await databaseService(connectionString);
 
@@ -65,7 +63,7 @@ const consumer = async (messageString) => {
 
     case "DELETE":
       await Product.findOneAndDelete({
-        _id: product._id,
+        product_name: product.product_name,
       })
         .then(() => {
           console.log(
