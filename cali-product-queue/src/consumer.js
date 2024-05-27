@@ -20,47 +20,47 @@ const consumer = async (message) => {
       await Product.create(product);
 
       logger.info(
-        `success | action: POST | product name: ${product.name} | product id: ${product.product_id}`
+        `success | action: POST | product name: ${product.product_name}`
       );
       break;
 
     case "PUT":
       await Product.findOneAndUpdate(
-        { product_id: product.product_id },
+        { product_name: product.product_name },
         product,
         { new: true }
       );
 
       logger.info(
-        `success | action: PUT | product name: ${product.name} | product id: ${product.product_id}`
+        `success | action: PUT | product name: ${product.product_name}}`
       );
       break;
 
     case "PATCH":
       await Product.findOneAndUpdate(
-        { product_id: product.product_id },
+        { product_name: product.product_name },
         product,
         { new: true }
       );
 
       logger.info(
-        `success | action: PATCH | product name: ${product.name} | product id: ${product.product_id}`
+        `success | action: PATCH | product name: ${product.product_name}`
       );
       break;
 
     case "DELETE":
       await Product.findOneAndDelete({
-        product_id: product.product_id,
+        _id: product._id,
       });
 
       logger.info(
-        `success | action: DELETE | product name: ${product.name} | product id: ${product.product_id}`
+        `success | action: DELETE | product name: ${product.product_name}`
       );
       break;
 
     default:
       logger.error(
-        `invalid ${operation} operation | product ID: ${product.product_id}`
+        `invalid ${operation} operation | product name: ${product.product_name}`
       );
       break;
   }
