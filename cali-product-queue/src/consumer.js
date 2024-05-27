@@ -5,8 +5,8 @@ const { databaseService } = require("./service/databaseService");
 // Load Environment Variables
 dotenv.config(".env");
 
-const consumer = async (message) => {
-  const message = JSON.parse(message);
+const consumer = async (messageString) => {
+  const message = JSON.parse(messageString);
 
   console.log(message);
 
