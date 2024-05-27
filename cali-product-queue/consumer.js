@@ -22,7 +22,7 @@ const consumer = async (messageString) => {
       console.error(`Database Connection Unsuccessful: ${error.message}.`);
     });
 
-  // Carryout Operation
+  // Persist Operation
   switch (operation) {
     case "POST":
       await Product.create(product)
