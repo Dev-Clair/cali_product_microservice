@@ -3,10 +3,6 @@ const slugify = require("slugify");
 
 const productSchema = new mongoose.Schema(
   {
-    product_id: {
-      type: String,
-      required: [true, "A product must have a product ID"],
-    },
     product_name: {
       type: String,
       trim: true,
@@ -76,4 +72,8 @@ productSchema.virtual("product_status").get(function () {
   return "OUT-OF-STOCK";
 });
 
-module.exports = productSchema;
+const Product = mongoose.model("Product", productSchema);
+
+const Connection = mongoose.connect(connectionString);
+
+module.exports = { Product, Connection };

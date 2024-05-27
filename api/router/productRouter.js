@@ -10,7 +10,7 @@ productRouter
 
 productRouter.route("/info").get(productController.retrieveApiInfo);
 
-productRouter.route("/search?q=").get(productController.searchProducts);
+productRouter.route("/search?q=").get(productController.retrieveProductSearch);
 
 productRouter
   .route("/:id")
