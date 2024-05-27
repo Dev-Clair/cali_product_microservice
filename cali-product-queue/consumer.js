@@ -15,76 +15,77 @@ const consumer = async (messageString) => {
 
   await Connection(connectionString)
     .then(() => {
-      console.log(`Database Connection Successful.\n`);
-      switch (operation) {
-        case "POST":
-          Product.create(product)
-            .then(() => {
-              console.log(
-                `status: success | action: POST | product name: ${product.product_name}`
-              );
-            })
-            .catch((error) => {
-              console.log(`${error}`);
-            });
-          break;
-
-        case "PUT":
-          Product.findOneAndUpdate(
-            { product_name: product.product_name },
-            product,
-            { new: true }
-          )
-            .then(() => {
-              console.log(
-                `status: success | action: PUT | product name: ${product.product_name}}`
-              );
-            })
-            .catch((error) => {
-              console.log(`${error}`);
-            });
-          break;
-
-        case "PATCH":
-          Product.findOneAndUpdate(
-            { product_name: product.product_name },
-            product,
-            { new: true }
-          )
-            .then(() => {
-              console.log(
-                `status: success | action: PATCH | product name: ${product.product_name}}`
-              );
-            })
-            .catch((error) => {
-              console.log(`${error}`);
-            });
-          break;
-
-        case "DELETE":
-          Product.findOneAndDelete({
-            product_name: product.product_name,
-          })
-            .then(() => {
-              console.log(
-                `status: success | action: DELETE | product name: ${product.product_name}`
-              );
-            })
-            .catch((error) => {
-              console.log(`${error}`);
-            });
-          break;
-
-        default:
-          console.log(
-            `invalid ${operation} operation | product name: ${product.product_name}`
-          );
-          break;
-      }
+      console.log(`Database Connection Successful.`);
     })
     .catch((error) => {
-      console.log(`Database Connection Unsuccessful:\n${error}`);
+      console.error(`Database Connection Unsuccessful:\n${error}.`);
     });
+
+  switch (operation) {
+    case "POST":
+      await Product.create(product)
+        .then(() => {
+          console.log(
+            `status: success | action: POST | product name: ${product.product_name}.`
+          );
+        })
+        .catch((error) => {
+          console.error(`${error}.\n`);
+        });
+      break;
+
+    case "PUT":
+      await Product.findOneAndUpdate(
+        { product_name: product.product_name },
+        product,
+        { new: true }
+      )
+        .then(() => {
+          console.log(
+            `status: success | action: PUT | product name: ${product.product_name}}.`
+          );
+        })
+        .catch((error) => {
+          console.error(`${error}.`);
+        });
+      break;
+
+    case "PATCH":
+      await Product.findOneAndUpdate(
+        { product_name: product.product_name },
+        product,
+        { new: true }
+      )
+        .then(() => {
+          console.log(
+            `status: success | action: PATCH | product name: ${product.product_name}}.`
+          );
+        })
+        .catch((error) => {
+          console.error(`${error}.`);
+        });
+      break;
+
+    case "DELETE":
+      await Product.findOneAndDelete({
+        product_name: product.product_name,
+      })
+        .then(() => {
+          console.log(
+            `status: success | action: DELETE | product name: ${product.product_name}.`
+          );
+        })
+        .catch((error) => {
+          console.error(`${error}.`);
+        });
+      break;
+
+    default:
+      console.warn(
+        `invalid ${operation} operation | product name: ${product.product_name}.`
+      );
+      break;
+  }
 };
 
 module.exports = { consumer };
