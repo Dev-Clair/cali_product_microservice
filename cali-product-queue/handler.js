@@ -1,4 +1,4 @@
-const { consumer } = require("./src/consumer");
+const { consumer } = require("./consumer");
 
 exports.consume = async (event) => {
   for (const record of event.Records) {
