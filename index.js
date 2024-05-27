@@ -3,6 +3,11 @@ const app = require("./app");
 const { logger } = require("./service/loggerService");
 const { databaseService } = require("./service/databaseService");
 
+process.on("unCaughtException", () => {
+  logger.info("CaughtException: Shutting down gracefully");
+  process.exit(1);
+});
+
 // Load Environment Variables
 dotenv.config(".env");
 
@@ -20,4 +25,9 @@ app.listen(port, async () => {
   } catch (error) {
     logger.error(`Error: ${error.message}`);
   }
+});
+
+process.on("unhandledRejection", () => {
+  logger.info("UnhandledRejection: Shutting down gracefully");
+  process.exit(1);
 });
