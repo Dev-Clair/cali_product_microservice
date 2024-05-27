@@ -1,5 +1,4 @@
 const { consumer } = require("./src/consumer");
-const { logger } = require("./src/service/loggerService");
 
 exports.consume = async (event) => {
   for (const record of event.Records) {

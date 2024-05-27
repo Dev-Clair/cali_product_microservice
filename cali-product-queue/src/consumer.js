@@ -23,7 +23,7 @@ const consumer = async (message) => {
       await Product.create(product)
         .then(() => {
           console.log(
-            `success | action: POST | product name: ${product.product_name}`
+            `status: success | action: POST | product name: ${product.product_name}`
           );
         })
         .catch((error) => {
@@ -39,7 +39,7 @@ const consumer = async (message) => {
       )
         .then(() => {
           console.log(
-            `success | action: PUT | product name: ${product.product_name}}`
+            `status: success | action: PUT | product name: ${product.product_name}}`
           );
         })
         .catch((error) => {
@@ -55,7 +55,7 @@ const consumer = async (message) => {
       )
         .then(() => {
           console.log(
-            `success | action: PATCH | product name: ${product.product_name}}`
+            `status: success | action: PATCH | product name: ${product.product_name}}`
           );
         })
         .catch((error) => {
@@ -69,7 +69,7 @@ const consumer = async (message) => {
       })
         .then(() => {
           console.log(
-            `success | action: DELETE | product name: ${product.product_name}`
+            `status: success | action: DELETE | product name: ${product.product_name}`
           );
         })
         .catch((error) => {
