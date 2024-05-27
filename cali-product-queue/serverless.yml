@@ -7,22 +7,17 @@ service: cali-product-queue
 provider:
   name: aws
   runtime: nodejs20.x
-  region: af-south-1
-  memorySize: 512MB
-  environment:
-    MONGO_URI: ${env:MONGO_URI}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - sqs:ReceiveMessage
-        - sqs:DeleteMessage
-        - sqs:GetQueueAttributes
+  region: ${env:AWS_REGION}
+  memorySize: 512
 
 functions:
   producer:
-    handler: handler.handle
+    handler: handler.consume
     events:
-      - sqs: arn:aws:sqs:af-south-1:654654412540:Cali_Product_Queue
+      - sqs: arn:aws:sqs:${env:AWS_REGION}:${env:AWS_ACCOUNT_ID}:Cali_Product_Queue
+    environment:
+      NODE_ENV: ${env:NODE_ENV}
+      MONGO_URI: ${env:AWS_MONGO_URI}
 
 resources:
   Resources:
