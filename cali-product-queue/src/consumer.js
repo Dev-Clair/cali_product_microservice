@@ -1,12 +1,15 @@
 const dotenv = require("dotenv");
 const Product = require("./model/productModel");
 const { databaseService } = require("./service/databaseService");
-const { logger } = require("./service/loggerService");
 
 // Load Environment Variables
 dotenv.config(".env");
 
 const consumer = async (message) => {
+  const message = JSON.parse(message);
+
+  console.log(message);
+
   const operation = message.operation;
 
   const product = message.product;
@@ -17,11 +20,15 @@ const consumer = async (message) => {
 
   switch (operation) {
     case "POST":
-      await Product.create(product);
-
-      logger.info(
-        `success | action: POST | product name: ${product.product_name}`
-      );
+      await Product.create(product)
+        .then(() => {
+          console.log(
+            `success | action: POST | product name: ${product.product_name}`
+          );
+        })
+        .catch((error) => {
+          console.log(`${error}`);
+        });
       break;
 
     case "PUT":
@@ -29,11 +36,15 @@ const consumer = async (message) => {
         { product_name: product.product_name },
         product,
         { new: true }
-      );
-
-      logger.info(
-        `success | action: PUT | product name: ${product.product_name}}`
-      );
+      )
+        .then(() => {
+          console.log(
+            `success | action: PUT | product name: ${product.product_name}}`
+          );
+        })
+        .catch((error) => {
+          console.log(`${error}`);
+        });
       break;
 
     case "PATCH":
@@ -41,25 +52,33 @@ const consumer = async (message) => {
         { product_name: product.product_name },
         product,
         { new: true }
-      );
-
-      logger.info(
-        `success | action: PATCH | product name: ${product.product_name}`
-      );
+      )
+        .then(() => {
+          console.log(
+            `success | action: PATCH | product name: ${product.product_name}}`
+          );
+        })
+        .catch((error) => {
+          console.log(`${error}`);
+        });
       break;
 
     case "DELETE":
       await Product.findOneAndDelete({
         _id: product._id,
-      });
-
-      logger.info(
-        `success | action: DELETE | product name: ${product.product_name}`
-      );
+      })
+        .then(() => {
+          console.log(
+            `success | action: DELETE | product name: ${product.product_name}`
+          );
+        })
+        .catch((error) => {
+          console.log(`${error}`);
+        });
       break;
 
     default:
-      logger.error(
+      console.log(
         `invalid ${operation} operation | product name: ${product.product_name}`
       );
       break;
