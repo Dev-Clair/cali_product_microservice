@@ -1,7 +1,7 @@
 const Product = require("./model/productModel");
-const { queueLogger } = require("../service/loggerService");
+const { logger } = require("../service/loggerService");
 
-async function consumer(message) {
+const consumer = async (message) => {
   const operation = message.operation;
 
   const product = message.product;
@@ -10,7 +10,7 @@ async function consumer(message) {
     case "POST":
       await Product.create(product);
 
-      queueLogger.info(
+      logger.info(
         `success | action: POST | product name: ${product.name} | product id: ${product.product_id}`
       );
       break;
@@ -22,7 +22,7 @@ async function consumer(message) {
         { new: true }
       );
 
-      queueLogger.info(
+      logger.info(
         `success | action: PUT | product name: ${product.name} | product id: ${product.product_id}`
       );
       break;
@@ -34,7 +34,7 @@ async function consumer(message) {
         { new: true }
       );
 
-      queueLogger.info(
+      logger.info(
         `success | action: PATCH | product name: ${product.name} | product id: ${product.product_id}`
       );
       break;
@@ -44,17 +44,17 @@ async function consumer(message) {
         product_id: product.product_id,
       });
 
-      queueLogger.info(
+      logger.info(
         `success | action: DELETE | product name: ${product.name} | product id: ${product.product_id}`
       );
       break;
 
     default:
-      queueLogger.error(
+      logger.error(
         `invalid ${operation} operation | product ID: ${product.product_id}`
       );
       break;
   }
-}
+};
 
 module.exports = { consumer };

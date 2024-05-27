@@ -5,7 +5,7 @@ const logFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
-const queueLogger = createLogger({
+const logger = createLogger({
   level: "info",
   format: combine(
     timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
@@ -18,4 +18,4 @@ const queueLogger = createLogger({
   ],
 });
 
-module.exports = { queueLogger };
+module.exports = { logger };

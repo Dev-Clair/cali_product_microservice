@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
-const consumer = require("./src/consumer");
-const databaseService = require("./service/databaseService");
+const { consumer } = require("./src/consumer");
+const { databaseService } = require("./service/databaseService");
 const { queueLogger } = require("./service/loggerService");
 
 // Load Environment Variables
