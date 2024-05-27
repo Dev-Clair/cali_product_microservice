@@ -6,7 +6,7 @@ const { logger } = require("../../service/loggerService");
  * Info Operation
  *
  */
-exports.retrieveApiInfo = (req, res) => {
+const retrieveApiInfo = (req, res) => {
   // Retrieves information about the API
   res.status(200).json({
     name: "cali_product_microservice",
@@ -29,7 +29,7 @@ exports.retrieveApiInfo = (req, res) => {
  * Collection Operation
  *
  */
-exports.retrieveProducts = async (req, res, next) => {
+const retrieveProducts = async (req, res, next) => {
   // Retrieves product collection
   try {
     const products = await Product.find();
@@ -50,7 +50,7 @@ exports.retrieveProducts = async (req, res, next) => {
  * Collection Operation
  *
  */
-exports.searchProducts = async (req, res, next) => {
+const retrieveProductSearch = async (req, res, next) => {
   // Retrieves an existing or collection of products based on search parameter
   try {
     const products = await Product.findOne({
@@ -73,7 +73,7 @@ exports.searchProducts = async (req, res, next) => {
  * Item Operation
  *
  */
-exports.retrieveProduct = async (req, res, next) => {
+const retrieveProduct = async (req, res, next) => {
   // Retrieves an existing product using its :id / :slug
   try {
     const product = await Product.findById({ _id: req.params.id });
@@ -97,6 +97,14 @@ exports.retrieveProduct = async (req, res, next) => {
  * Not allowed Operation: POST | PUT | PATCH | DELETE
  *
  */
-exports.methodNotAllowed = (req, res, next) => {
+const methodNotAllowed = (req, res, next) => {
   res.status(405).json({ message: "Method Not Allowed" });
+};
+
+module.exports = {
+  retrieveApiInfo,
+  retrieveProductSearch,
+  retrieveProducts,
+  retrieveProduct,
+  methodNotAllowed,
 };
