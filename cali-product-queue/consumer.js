@@ -13,6 +13,7 @@ const consumer = async (messageString) => {
 
   const connectionString = process.env.MONGO_URI;
 
+  // Establish Database Connection
   await Connection(connectionString)
     .then(() => {
       console.log(`Database Connection Successful.`);
@@ -21,6 +22,7 @@ const consumer = async (messageString) => {
       console.error(`Database Connection Unsuccessful:\n${error}.`);
     });
 
+  // Carryout Operation
   switch (operation) {
     case "POST":
       await Product.create(product)
