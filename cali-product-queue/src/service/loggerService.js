@@ -12,6 +12,7 @@ const logger = createLogger({
     colorize(),
     logFormat
   ),
+  transports: [new transports.Console()],
 });
 
 module.exports = { logger };
