@@ -5,7 +5,7 @@ const logFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
-const apiLogger = createLogger({
+const logger = createLogger({
   level: "info",
   format: combine(
     timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
@@ -19,4 +19,4 @@ const apiLogger = createLogger({
   ],
 });
 
-module.exports = { apiLogger };
+module.exports = { logger };

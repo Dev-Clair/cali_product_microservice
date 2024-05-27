@@ -1,5 +1,5 @@
-const productModel = require("../models/productModel");
-const { apiLogger } = require("../../service/loggerService");
+const Product = require("../models/productModel");
+const { logger } = require("../../service/loggerService");
 
 /**
  *
@@ -32,14 +32,14 @@ exports.retrieveApiInfo = (req, res) => {
 exports.retrieveProducts = async (req, res, next) => {
   // Retrieves product collection
   try {
-    const products = await productModel.find();
+    const products = await Product.find();
 
     res.status(200).json({
       count: products.length,
       products: products,
     });
   } catch (error) {
-    apiLogger.error(`${error.message}`);
+    logger.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
@@ -53,7 +53,7 @@ exports.retrieveProducts = async (req, res, next) => {
 exports.searchProducts = async (req, res, next) => {
   // Retrieves an existing or collection of products based on search parameter
   try {
-    const products = await productModel.findOne({
+    const products = await Product.findOne({
       $text: { $search: req.query.q, $caseSensitive: false },
     });
 
@@ -62,7 +62,7 @@ exports.searchProducts = async (req, res, next) => {
       products: products,
     });
   } catch (error) {
-    apiLogger.error(`${error.message}`);
+    logger.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
@@ -76,7 +76,7 @@ exports.searchProducts = async (req, res, next) => {
 exports.retrieveProduct = async (req, res, next) => {
   // Retrieves an existing product using its :id / :slug
   try {
-    const product = await productModel.findById({ _id: req.params.id });
+    const product = await Product.findById({ _id: req.params.id });
 
     if (!product) {
       res
@@ -86,7 +86,7 @@ exports.retrieveProduct = async (req, res, next) => {
 
     res.status(200).json({ product: product });
   } catch (error) {
-    apiLogger.error(`${error.message}`);
+    logger.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
