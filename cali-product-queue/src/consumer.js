@@ -1,10 +1,19 @@
+const dotenv = require("dotenv");
 const Product = require("./model/productModel");
-const { logger } = require("../service/loggerService");
+const { databaseService } = require("./service/databaseService");
+const { logger } = require("./service/loggerService");
+
+// Load Environment Variables
+dotenv.config(".env");
 
 const consumer = async (message) => {
   const operation = message.operation;
 
   const product = message.product;
+
+  const connectionString = process.env.MONGO_URI || "";
+
+  await databaseService(connectionString);
 
   switch (operation) {
     case "POST":

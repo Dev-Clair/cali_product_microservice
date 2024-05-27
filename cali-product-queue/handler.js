@@ -1,14 +1,8 @@
-const dotenv = require("dotenv");
 const { consumer } = require("./src/consumer");
-const { databaseService } = require("./service/databaseService");
-const { queueLogger } = require("./service/loggerService");
-
-// Load Environment Variables
-dotenv.config(".env");
+const { queueLogger } = require("./src/service/loggerService");
 
 exports.handle = async (event) => {
   for (const record of event.Records) {
-    await databaseService(process.env.MONGO_URI);
     try {
       await consumer(record.body);
     } catch (error) {
