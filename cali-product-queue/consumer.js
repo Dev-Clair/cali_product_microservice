@@ -19,7 +19,7 @@ const consumer = async (messageString) => {
       console.log(`Database Connection Successful.`);
     })
     .catch((error) => {
-      console.error(`Database Connection Unsuccessful:\n${error}.`);
+      console.error(`Database Connection Unsuccessful: ${error.message}.`);
     });
 
   // Carryout Operation
@@ -27,12 +27,10 @@ const consumer = async (messageString) => {
     case "POST":
       await Product.create(product)
         .then(() => {
-          console.log(
-            `status: success | action: POST | product name: ${product.product_name}.`
-          );
+          console.log(`POST: Success | Resource: ${product.product_name}.`);
         })
         .catch((error) => {
-          console.error(`${error}.\n`);
+          console.error(`${operation} Error: ${error.message}.\n`);
         });
       break;
 
@@ -43,12 +41,10 @@ const consumer = async (messageString) => {
         { new: true }
       )
         .then(() => {
-          console.log(
-            `status: success | action: PUT | product name: ${product.product_name}}.`
-          );
+          console.log(`PUT: Success | Resource: ${product.product_name}}.`);
         })
         .catch((error) => {
-          console.error(`${error}.`);
+          console.error(`${operation} Error: ${error.message}.`);
         });
       break;
 
@@ -59,12 +55,10 @@ const consumer = async (messageString) => {
         { new: true }
       )
         .then(() => {
-          console.log(
-            `status: success | action: PATCH | product name: ${product.product_name}}.`
-          );
+          console.log(`PATCH: Success | Resource: ${product.product_name}}.`);
         })
         .catch((error) => {
-          console.error(`${error}.`);
+          console.error(`${operation} Error: ${error.message}.`);
         });
       break;
 
@@ -73,18 +67,16 @@ const consumer = async (messageString) => {
         product_name: product.product_name,
       })
         .then(() => {
-          console.log(
-            `status: success | action: DELETE | product name: ${product.product_name}.`
-          );
+          console.log(`DELETE: Success | Resource: ${product.product_name}.`);
         })
         .catch((error) => {
-          console.error(`${error}.`);
+          console.error(`${operation} Error: ${error.message}.`);
         });
       break;
 
     default:
       console.warn(
-        `invalid ${operation} operation | product name: ${product.product_name}.`
+        `Invalid operation: ${operation} | Resource: ${product.product_name}.`
       );
       break;
   }
