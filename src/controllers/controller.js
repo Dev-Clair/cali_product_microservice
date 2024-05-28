@@ -1,5 +1,4 @@
-const Product = require("../models/productModel");
-const { logger } = require("../../service/loggerService");
+const Product = require("../models/model");
 
 /**
  *
