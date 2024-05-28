@@ -28,58 +28,58 @@ const consumer = async (messageString) => {
   // Persist Operation
   switch (operation) {
     case "POST":
-      await Product.create(product)
-        .then(() => {
-          console.log(`POST: Success | Resource: ${product.product_name}.`);
-        })
-        .catch((error) => {
-          console.error(`${operation} Error: ${error.message}.\n`);
-        });
+      try {
+        const products = await Product.create(product);
+
+        console.log(`POST: Success | Resource: (${true}).`);
+      } catch (error) {
+        console.error(`POST: Failure | Error: ${error.message}.\n`);
+      }
       break;
 
     case "PUT":
-      await Product.findOneAndUpdate(
-        { product_name: product.product_name },
-        product,
-        { new: true }
-      )
-        .then(() => {
-          console.log(`PUT: Success | Resource: ${product.product_name}}.`);
-        })
-        .catch((error) => {
-          console.error(`${operation} Error: ${error.message}.`);
-        });
+      try {
+        const product = await Product.findOneAndUpdate(
+          { product_name: product.product_name },
+          product,
+          { new: false }
+        );
+
+        console.log(`PUT: Success | Resource: ${product.product_name}}.`);
+      } catch (error) {
+        console.error(`PUT: Failure | Error: ${error.message}.`);
+      }
       break;
 
     case "PATCH":
-      await Product.findOneAndUpdate(
-        { product_name: product.product_name },
-        product,
-        { new: true }
-      )
-        .then(() => {
-          console.log(`PATCH: Success | Resource: ${product.product_name}}.`);
-        })
-        .catch((error) => {
-          console.error(`${operation} Error: ${error.message}.`);
-        });
+      try {
+        const product = await Product.findOneAndUpdate(
+          { product_name: product.product_name },
+          product,
+          { new: false }
+        );
+
+        console.log(`PATCH: Success | Resource: ${product.product_name}}.`);
+      } catch (error) {
+        console.error(`PATCH: Failure | Error: ${error.message}.`);
+      }
       break;
 
     case "DELETE":
-      await Product.findOneAndDelete({
-        product_name: product.product_name,
-      })
-        .then(() => {
-          console.log(`DELETE: Success | Resource: ${product.product_name}.`);
-        })
-        .catch((error) => {
-          console.error(`${operation} Error: ${error.message}.`);
+      try {
+        const product = await Product.findOneAndDelete({
+          product_name: product.product_name,
         });
+
+        console.log(`DELETE: Success | Resource: ${product.product_name}.`);
+      } catch (error) {
+        console.error(`DELETE: Failure | Error: ${error.message}.`);
+      }
       break;
 
     default:
-      console.warn(
-        `Invalid operation: ${operation} | Resource: ${product.product_name}.`
+      console.error(
+        `${operation}: Invalid | Resource: ${product.product_name || ""}.`
       );
       break;
   }
