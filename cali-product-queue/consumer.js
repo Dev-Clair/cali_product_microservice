@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
-const { Product, Connection } = require("./model");
+const mongoose = require("mongoose");
+const { Product } = require("./model");
 
 // Load Environment Variables
 dotenv.config(".env");
@@ -14,15 +15,15 @@ const consumer = async (messageString) => {
   const connectionString = process.env.MONGO_URI;
 
   // Establish Database Connection
-  await Connection(connectionString)
-    .then(() => {
-      console.log(`Database Connection Successful.`);
-    })
-    .catch((error) => {
-      console.error(`Database Connection Unsuccessful: ${error.message}.`);
-    });
+  const Connection = await mongoose.connect(connectionString);
 
-  // Carryout Operation
+  Connection.then(() => {
+    console.log(`Database Connection Successful.`);
+  }).catch((error) => {
+    console.error(`Database Connection Unsuccessful: ${error.message}.`);
+  });
+
+  // Persist Operation
   switch (operation) {
     case "POST":
       await Product.create(product)
