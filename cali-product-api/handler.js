@@ -24,9 +24,4 @@ databaseConnection
     console.error(`Database Connection Unsuccessful: ${error.message}.`);
   });
 
-process.on("unhandledRejection", () => {
-  console.warn("UnhandledRejection: Shutting down gracefully");
-  process.exit(1);
-});
-
 exports.product = serverless(app);
