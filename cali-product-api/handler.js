@@ -1,23 +1,31 @@
 const serverless = require("serverless-http");
-const express = require("express");
-const app = express();
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const app = require("./app");
 
-app.get("/", (req, res, next) => {
-  return res.status(200).json({
-    message: "Hello from root!",
-  });
+process.on("unCaughtException", () => {
+  console.warn("unCaughtException: Shutting down gracefully");
+  process.exit(1);
 });
 
-app.get("/hello", (req, res, next) => {
-  return res.status(200).json({
-    message: "Hello from path!",
+// Load Environment Variables
+dotenv.config(".env");
+
+// Establish Database Connection
+const connectionString = process.env.MONGO_URI;
+
+mongoose
+  .connect(connectionString)
+  .then(() => {
+    console.info(`Database Connection Successful`);
+  })
+  .catch((error) => {
+    console.error(`Database Connection Unsuccessful: ${error.message}.`);
   });
+
+process.on("unhandledRejection", () => {
+  console.warn("UnhandledRejection: Shutting down gracefully");
+  process.exit(1);
 });
 
-app.use((req, res, next) => {
-  return res.status(404).json({
-    error: "Not Found",
-  });
-});
-
-exports.handler = serverless(app);
+exports.product = serverless(app);

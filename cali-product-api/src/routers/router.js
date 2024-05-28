@@ -4,15 +4,15 @@ const Controller = require("../controllers/controller");
 const Router = express.Router();
 
 Router.route("/")
-  .get(Controller.retrieveCollection)
+  .get(Controller.retrieveProductCollection)
   .post(Controller.methodNotAllowed);
 
-Router.route("/info").get(Controller.retrieveInfo);
+Router.route("/info").get(Controller.retrieveApiInfo);
 
-Router.route("/search?q=").get(Controller.retrieveSearch);
+Router.route("/search").get(Controller.retrieveProductSearch);
 
 Router.route("/:id")
-  .get(Controller.retrieveItem)
+  .get(Controller.retrieveProductItem)
   .put(Controller.methodNotAllowed)
   .patch(Controller.methodNotAllowed)
   .delete(Controller.methodNotAllowed);
