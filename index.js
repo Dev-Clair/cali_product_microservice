@@ -1,7 +1,5 @@
 const dotenv = require("dotenv");
 const app = require("./app");
-const { logger } = require("./service/loggerService");
-const { databaseService } = require("./service/databaseService");
 
 process.on("unCaughtException", () => {
   logger.info("CaughtException: Shutting down gracefully");
@@ -21,9 +19,9 @@ app.listen(port, async () => {
 
   try {
     await databaseService(process.env.MONGO_URI);
-    logger.info(`Connected to MongoDB`);
+    console.info(`Connected to MongoDB`);
   } catch (error) {
-    logger.error(`Error: ${error.message}`);
+    console.error(`Error: ${error.message}`);
   }
 });
 

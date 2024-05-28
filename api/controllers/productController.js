@@ -39,7 +39,7 @@ const retrieveProducts = async (req, res, next) => {
       products: products,
     });
   } catch (error) {
-    logger.error(`${error.message}`);
+    console.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
@@ -62,7 +62,7 @@ const retrieveProductSearch = async (req, res, next) => {
       products: products,
     });
   } catch (error) {
-    logger.error(`${error.message}`);
+    console.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
@@ -86,7 +86,7 @@ const retrieveProduct = async (req, res, next) => {
 
     res.status(200).json({ product: product });
   } catch (error) {
-    logger.error(`${error.message}`);
+    console.error(`${error.message}`);
 
     res.status(500).json({ error: error.message });
   }
