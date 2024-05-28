@@ -78,6 +78,4 @@ productSchema.virtual("product_status").get(function () {
 
 const Product = mongoose.model("Product", productSchema);
 
-const Connection = mongoose.connect(connectionString);
-
-module.exports = { Product, Connection };
+module.exports = { Product };

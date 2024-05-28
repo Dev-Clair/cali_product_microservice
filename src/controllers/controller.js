@@ -1,4 +1,21 @@
-const Product = require("../models/model");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const { Product } = require("../models/model");
+
+// Load Environment Variables
+dotenv.config(".env");
+
+const connectionString = process.env.MONGO_URI;
+
+// Establish Database Connection
+mongoose
+  .connect(connectionString)
+  .then(() => {
+    console.info(`Database Connection Successful`);
+  })
+  .catch((error) => {
+    console.error(`Database Connection Unsuccessful: ${error.message}.`);
+  });
 
 /**
  *
