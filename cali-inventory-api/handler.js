@@ -20,4 +20,4 @@ app.use((req, res, next) => {
   });
 });
 
-exports.handler = serverless(app);
+exports.inventory = serverless(app);

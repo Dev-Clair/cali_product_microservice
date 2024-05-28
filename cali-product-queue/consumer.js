@@ -15,13 +15,15 @@ const consumer = async (messageString) => {
   const connectionString = process.env.MONGO_URI;
 
   // Establish Database Connection
-  const Connection = await mongoose.connect(connectionString);
+  const databaseConnection = await mongoose.connect(connectionString);
 
-  Connection.then(() => {
-    console.log(`Database Connection Successful.`);
-  }).catch((error) => {
-    console.error(`Database Connection Unsuccessful: ${error.message}.`);
-  });
+  databaseConnection
+    .then(() => {
+      console.log(`Database Connection Successful.`);
+    })
+    .catch((error) => {
+      console.error(`Database Connection Unsuccessful: ${error.message}.`);
+    });
 
   // Persist Operation
   switch (operation) {
