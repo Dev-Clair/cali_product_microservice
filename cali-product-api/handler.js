@@ -14,8 +14,9 @@ dotenv.config(".env");
 // Establish Database Connection
 const connectionString = process.env.MONGO_URI;
 
-mongoose
-  .connect(connectionString)
+const databaseConnection = mongoose.connect(connectionString);
+
+databaseConnection
   .then(() => {
     console.info(`Database Connection Successful`);
   })
