@@ -1,5 +1,5 @@
 const express = require("express");
-const productRouter = require("./api/router/productRouter");
+const Router = require("./src/routers/router");
 
 // Create an Express Application Instance
 const app = express();
@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/v1/products", productRouter.productRouter);
+app.use("/api/v1/products", Router.Router);
 
 app.all("*", (req, res) => {
   res.status(404).json({
