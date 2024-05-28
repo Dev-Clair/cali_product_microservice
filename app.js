@@ -12,8 +12,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/v1/products", Router.Router);
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
   res.send(500).json({ status: "Internal Server Error" });
+  console.error(err.message);
+  next();
 });
 
 app.all("*", (req, res, next) => {

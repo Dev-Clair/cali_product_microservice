@@ -1,21 +1,4 @@
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 const { Product } = require("../models/model");
-
-// Load Environment Variables
-dotenv.config(".env");
-
-const connectionString = process.env.MONGO_URI;
-
-// Establish Database Connection
-mongoose
-  .connect(connectionString)
-  .then(() => {
-    console.info(`Database Connection Successful`);
-  })
-  .catch((error) => {
-    console.error(`Database Connection Unsuccessful: ${error.message}.`);
-  });
 
 /**
  *
@@ -47,18 +30,16 @@ const retrieveApiInfo = (req, res) => {
  */
 const retrieveProducts = async (req, res, next) => {
   // Retrieves product collection
-  try {
-    const products = await Product.find();
-
-    res.status(200).json({
-      count: products.length,
-      products: products,
+  await Product.find()
+    .then((products) => {
+      res.status(200).json({
+        count: products.length,
+        products: products,
+      });
+    })
+    .catch((error) => {
+      next(`${error}`);
     });
-  } catch (error) {
-    console.error(`${error.message}`);
-
-    res.status(500).json({ error: error.message });
-  }
 };
 
 /**
@@ -68,20 +49,18 @@ const retrieveProducts = async (req, res, next) => {
  */
 const retrieveProductSearch = async (req, res, next) => {
   // Retrieves an existing or collection of products based on search parameter
-  try {
-    const products = await Product.findOne({
-      $text: { $search: req.query.q, $caseSensitive: false },
+  await Product.findOne({
+    $text: { $search: req.query.q, $caseSensitive: false },
+  })
+    .then((products) => {
+      res.status(200).json({
+        count: products.length,
+        products: products,
+      });
+    })
+    .catch((error) => {
+      next(`${error}`);
     });
-
-    res.status(200).json({
-      count: products.length,
-      products: products,
-    });
-  } catch (error) {
-    console.error(`${error.message}`);
-
-    res.status(500).json({ error: error.message });
-  }
 };
 
 /**
@@ -91,21 +70,19 @@ const retrieveProductSearch = async (req, res, next) => {
  */
 const retrieveProduct = async (req, res, next) => {
   // Retrieves an existing product using its :id / :slug
-  try {
-    const product = await Product.findById({ _id: req.params.id });
+  await Product.findById({ _id: req.params.id })
+    .then((product) => {
+      if (!product) {
+        res
+          .status(404)
+          .json({ message: `No product found for id: ${req.params.id}` });
+      }
 
-    if (!product) {
-      res
-        .status(404)
-        .json({ message: `No product found for id: ${req.params.id}` });
-    }
-
-    res.status(200).json({ product: product });
-  } catch (error) {
-    console.error(`${error.message}`);
-
-    res.status(500).json({ error: error.message });
-  }
+      res.status(200).json({ product: product });
+    })
+    .catch((error) => {
+      next(`${error.message}`);
+    });
 };
 
 /**
