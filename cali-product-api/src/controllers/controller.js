@@ -3,7 +3,7 @@ const { Product } = require("../models/model");
 /**
  * Retrieve information about the API.
  */
-const retrieveApiInfo = (req, res) => {
+const retrieveApiInfo = (req, res, next) => {
   res.status(200).json({
     name: "cali_product_microservice",
     version: "1.0.0",
@@ -40,7 +40,7 @@ const retrieveProductCollection = async (req, res, next) => {
  */
 const retrieveProductSearch = async (req, res, next) => {
   try {
-    const products = await Product.findOne({
+    const products = await Product.find({
       $text: { $search: req.query.q, $caseSensitive: false },
     });
 
