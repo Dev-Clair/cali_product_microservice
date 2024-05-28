@@ -5,7 +5,7 @@ const { Product } = require("../models/model");
  * Info Operation
  *
  */
-const retrieveApiInfo = (req, res) => {
+const retrieveInfo = (req, res) => {
   // Retrieves information about the API
   res.status(200).json({
     name: "cali_product_microservice",
@@ -28,7 +28,7 @@ const retrieveApiInfo = (req, res) => {
  * Collection Operation
  *
  */
-const retrieveProducts = async (req, res, next) => {
+const retrieveCollection = async (req, res, next) => {
   // Retrieves product collection
   await Product.find()
     .then((products) => {
@@ -47,7 +47,7 @@ const retrieveProducts = async (req, res, next) => {
  * Collection Operation
  *
  */
-const retrieveProductSearch = async (req, res, next) => {
+const retrieveSearch = async (req, res, next) => {
   // Retrieves an existing or collection of products based on search parameter
   await Product.findOne({
     $text: { $search: req.query.q, $caseSensitive: false },
@@ -68,7 +68,7 @@ const retrieveProductSearch = async (req, res, next) => {
  * Item Operation
  *
  */
-const retrieveProduct = async (req, res, next) => {
+const retrieveItem = async (req, res, next) => {
   // Retrieves an existing product using its :id / :slug
   await Product.findById({ _id: req.params.id })
     .then((product) => {
@@ -95,9 +95,9 @@ const methodNotAllowed = (req, res, next) => {
 };
 
 module.exports = {
-  retrieveApiInfo,
-  retrieveProductSearch,
-  retrieveProducts,
-  retrieveProduct,
+  retrieveInfo,
+  retrieveSearch,
+  retrieveCollection,
+  retrieveItem,
   methodNotAllowed,
 };
