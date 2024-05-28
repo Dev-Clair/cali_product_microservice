@@ -1,7 +1,7 @@
 {
   "name": "cali-inventory-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Command implementation for an event driven product microservice using CQRS architecture pattern",
   "dependencies": {
     "express": "^4.18.2",
     "serverless-http": "^3.2.0"
