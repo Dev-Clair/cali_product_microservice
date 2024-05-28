@@ -4,6 +4,8 @@ app: product-microservice
 
 service: cali-inventory-api
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs20.x
