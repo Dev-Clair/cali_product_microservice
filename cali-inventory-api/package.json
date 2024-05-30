@@ -1,9 +1,30 @@
 {
   "name": "cali-inventory-api",
   "version": "1.0.0",
+  "main": "handler.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "offline": "serverless offline"
+  },
+  "keywords": [
+    "inventory",
+    "api",
+    "microservice"
+  ],
+  "author": "Aniogbu  Samuel",
+  "license": "ISC",
   "description": "Command implementation for an event driven product microservice using CQRS architecture pattern",
   "dependencies": {
+    "aws-sdk": "^2.1630.0",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "serverless-http": "^3.2.0"
+    "mongoose": "^8.4.0",
+    "serverless-http": "^3.2.0",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "serverless-offline": "^13.6.0"
   }
 }
