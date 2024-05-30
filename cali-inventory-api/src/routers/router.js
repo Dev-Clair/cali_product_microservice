@@ -12,7 +12,7 @@ Router.route("/info").get(Controller.retrieveInventoryApiInfo);
 Router.route("/search").get(Controller.retrieveInventorySearch);
 
 Router.route("/:id")
-  .get(Controller.retrieveinventoryItem)
+  .get(Controller.retrieveInventoryItem)
   .put(Controller.replaceInventory)
   .patch(Controller.updateInventory)
   .delete(Controller.deleteInventory);
