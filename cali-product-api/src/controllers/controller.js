@@ -72,7 +72,7 @@ const retrieveProductSearch = async (req, res, next) => {
  */
 const retrieveProductItem = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById({ _id: req.params.id });
 
     if (!product) {
       return res
