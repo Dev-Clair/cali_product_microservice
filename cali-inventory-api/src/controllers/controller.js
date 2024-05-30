@@ -58,7 +58,7 @@ const retrieveInventorySearch = async (req, res, next) => {
  */
 const retrieveInventoryItem = async (req, res, next) => {
   try {
-    const inventory = await Inventory.findById(req.params.id);
+    const inventory = await Inventory.findById({ _id: req.params.id });
 
     if (!inventory) {
       return res
@@ -95,7 +95,10 @@ const createInventory = async (req, res, next) => {
  */
 const replaceInventory = async (req, res, next) => {
   try {
-    const inventory = await Inventory.replaceOne({ _id: req.params.id });
+    const inventory = await Inventory.findOneAndReplace(
+      { _id: req.params.id },
+      req.params.body
+    );
 
     if (!inventory) {
       return res
@@ -117,7 +120,10 @@ const replaceInventory = async (req, res, next) => {
  */
 const updateInventory = async (req, res, next) => {
   try {
-    const inventory = await Inventory.updateOne({ _id: req.params.id });
+    const inventory = await Inventory.findOneAndUpdate(
+      { _id: req.params.id },
+      req.params.body
+    );
 
     if (!inventory) {
       return res
@@ -139,7 +145,7 @@ const updateInventory = async (req, res, next) => {
  */
 const deleteInventory = async (req, res, next) => {
   try {
-    const inventory = await Inventory.deleteOne({ _id: req.params.id });
+    const inventory = await Inventory.findOneAndDelete({ _id: req.params.id });
 
     if (!inventory) {
       return res
