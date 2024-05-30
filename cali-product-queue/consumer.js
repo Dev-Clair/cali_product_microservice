@@ -29,7 +29,7 @@ const consumer = async (messageString) => {
   switch (operation) {
     case "POST":
       try {
-        const products = await Product.create(product);
+        const result = await Product.create(product);
 
         console.log(`POST: Success | Resource: (${true}).`);
       } catch (error) {
@@ -39,7 +39,7 @@ const consumer = async (messageString) => {
 
     case "PUT":
       try {
-        const product = await Product.findOneAndUpdate(
+        const result = await Product.findOneAndReplace(
           { product_name: product.product_name },
           product,
           { new: false }
@@ -53,7 +53,7 @@ const consumer = async (messageString) => {
 
     case "PATCH":
       try {
-        const product = await Product.findOneAndUpdate(
+        const result = await Product.findOneAndUpdate(
           { product_name: product.product_name },
           product,
           { new: false }
@@ -67,7 +67,7 @@ const consumer = async (messageString) => {
 
     case "DELETE":
       try {
-        const product = await Product.findOneAndDelete({
+        const result = await Product.findOneAndDelete({
           product_name: product.product_name,
         });
 

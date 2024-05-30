@@ -67,15 +67,6 @@ productSchema.pre("save", function (next) {
   next();
 });
 
-// Virtual Properties
-productSchema.virtual("product_status").get(function () {
-  if (this.product_stock_quantity > 0) {
-    return "AVAILABLE";
-  }
-
-  return "OUT-OF-STOCK";
-});
-
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = { productSchema };
+module.exports = { Product };
