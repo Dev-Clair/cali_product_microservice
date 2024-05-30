@@ -1,5 +1,5 @@
 const { Inventory } = require("../models/model");
-const { SQS } = require("../sqs/sqs");
+const { cali_product_queue } = require("../sqs/sqs");
 
 /**
  * Retrieve information about the inventory API.
@@ -8,23 +8,25 @@ const retrieveInventoryApiInfo = (req, res, next) => {
   res.status(200).json({
     name: "cali_inventory_microservice",
     version: "1.0.0",
-    status: active,
-    collection_operations: [
-      {
-        path: "api/v1/inventories/",
-        allowed: ["POST"],
+    status: "active",
+    guide: {
+      collection_operations: [
+        {
+          path: "/api/v1/inventories/",
+          allowed: ["POST"],
+          not_allowed: ["GET"],
+        },
+        {
+          path: "/api/v1/inventories/search",
+          allowed: ["GET"],
+          not_allowed: ["POST"],
+        },
+      ],
+      item_operations: {
+        path: "/api/v1/inventories/:id",
+        allowed: ["PUT", "PATCH", "DELETE"],
         not_allowed: ["GET"],
       },
-      {
-        path: "api/v1/inventories/search",
-        allowed: ["GET"],
-        not_allowed: ["POST"],
-      },
-    ],
-    item_operations: {
-      path: "api/v1/inventories/:id",
-      allowed: ["PUT", "PATCH", "DELETE"],
-      not_allowed: ["GET"],
     },
   });
 };
@@ -85,8 +87,7 @@ const createInventory = async (req, res, next) => {
 
     // Send http response
     res.status(201).json({
-      status: "Created",
-      message: "New Item added to inventory collection",
+      message: "New item added to inventory collection",
     });
   } catch (err) {
     next(err);
@@ -98,23 +99,21 @@ const createInventory = async (req, res, next) => {
  */
 const replaceInventory = async (req, res, next) => {
   try {
-    const inventory = await Inventory.findOneAndReplace(
+    const inventory = await Inventory.findByIdAndUpdate(
       { _id: req.params.id },
       req.params.body
     );
 
     if (!inventory) {
-      return res
-        .status(404)
-        .json({ message: `No item found for inventory id: ${req.params.id}` });
+      return res.status(404).json({
+        message: `No item found for inventory id: ${req.params.id}`,
+      });
     }
 
     // Send message to queue
 
     // Send http response
-
-    res.status(200).json({
-      status: "Modified",
+    res.status(204).json({
       message: `Item with id: ${req.params.id} modified`,
     });
   } catch (err) {
@@ -127,23 +126,21 @@ const replaceInventory = async (req, res, next) => {
  */
 const updateInventory = async (req, res, next) => {
   try {
-    const inventory = await Inventory.findOneAndUpdate(
+    const inventory = await Inventory.findByIdAndUpdate(
       { _id: req.params.id },
       req.params.body
     );
 
     if (!inventory) {
-      return res
-        .status(404)
-        .json({ message: `No item found for inventory id: ${req.params.id}` });
+      return res.status(404).json({
+        message: `No item found for inventory id: ${req.params.id}`,
+      });
     }
 
     // Send message to queue
 
     // Send http response
-
-    res.status(200).json({
-      status: "Modified",
+    res.status(204).json({
       message: `Item with id: ${req.params.id} modified`,
     });
   } catch (err) {
@@ -156,20 +153,18 @@ const updateInventory = async (req, res, next) => {
  */
 const deleteInventory = async (req, res, next) => {
   try {
-    const inventory = await Inventory.findOneAndDelete({ _id: req.params.id });
+    const inventory = await Inventory.findByIdAndDelete({ _id: req.params.id });
 
     if (!inventory) {
-      return res
-        .status(404)
-        .json({ message: `No item found for inventory id: ${req.params.id}` });
+      return res.status(404).json({
+        message: `No item found for inventory id: ${req.params.id}`,
+      });
     }
 
     // Send message to queue
 
     // Send http response
-
     res.status(204).json({
-      status: "Deleted",
       message: `Item with id: ${req.params.id} deleted`,
     });
   } catch (err) {
@@ -181,7 +176,9 @@ const deleteInventory = async (req, res, next) => {
  * Handle not allowed methods: GET
  */
 const methodNotAllowed = (req, res) => {
-  res.status(405).json({ message: "Method Not Allowed" });
+  res.status(405).json({
+    message: "Cannot retrieve inventory resource",
+  });
 };
 
 module.exports = {

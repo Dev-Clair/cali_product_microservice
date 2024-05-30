@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
-const { SendMessageCommand, SQSClient } = require("aws-sdk");
+const { SendMessageCommand, SQSClient } = require("aws-sdk/clients/sqs");
+// import { SendMessageCommand, SQSClient } from "@aws-sdk/clients/sqs";
 
 dotenv.config("../../env");
 
@@ -10,17 +11,19 @@ const Sqs_Queue_Url =
   process.env.AWS_REGION +
   `:` +
   process.env.AWS_ACCOUNT_ID +
-  `:Cali_Product_Queue`;
+  `:` +
+  `Cali_Product_Queue`;
 
 const cali_product_queue = async (Message_Body) => {
   const command = new SendMessageCommand({
     QueueUrl: Sqs_Queue_Url,
-    messageBody: Message_Body,
+    DelaySeconds: 15,
+    MessageAttributes: {},
+    MessageBody: JSON.stringify(Message_Body),
   });
 
   const response = await client.send(command);
   console.log(response);
-  return response;
 };
 
 module.exports = { cali_product_queue };
