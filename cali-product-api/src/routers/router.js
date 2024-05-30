@@ -7,7 +7,7 @@ Router.route("/")
   .get(Controller.retrieveProductCollection)
   .post(Controller.methodNotAllowed);
 
-Router.route("/info").get(Controller.retrieveApiInfo);
+Router.route("/info").get(Controller.retrieveProductApiInfo);
 
 Router.route("/search").get(Controller.retrieveProductSearch);
 

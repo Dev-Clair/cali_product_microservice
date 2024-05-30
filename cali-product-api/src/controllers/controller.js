@@ -1,17 +1,25 @@
 const { Product } = require("../models/model");
 
 /**
- * Retrieve information about the API.
+ * Retrieve information about the Product API.
  */
-const retrieveApiInfo = (req, res, next) => {
+const retrieveProductApiInfo = (req, res, next) => {
   res.status(200).json({
     name: "cali_product_microservice",
     version: "1.0.0",
-    collection_operations: {
-      path: "api/v1/products/search?q=",
-      allowed: ["GET"],
-      not_allowed: ["POST"],
-    },
+    status: active,
+    collection_operations: [
+      {
+        path: "api/v1/products/",
+        allowed: ["GET"],
+        not_allowed: ["POST"],
+      },
+      {
+        path: "api/v1/products/search",
+        allowed: ["GET"],
+        not_allowed: ["POST"],
+      },
+    ],
     item_operations: {
       path: "api/v1/products/:id",
       allowed: ["GET"],
@@ -86,7 +94,7 @@ const methodNotAllowed = (req, res) => {
 };
 
 module.exports = {
-  retrieveApiInfo,
+  retrieveProductApiInfo,
   retrieveProductSearch,
   retrieveProductCollection,
   retrieveProductItem,
