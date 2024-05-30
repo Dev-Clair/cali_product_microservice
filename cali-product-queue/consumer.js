@@ -41,8 +41,7 @@ const consumer = async (messageString) => {
       try {
         const result = await Product.findOneAndReplace(
           { product_name: product.product_name },
-          product,
-          { new: false }
+          product
         );
 
         console.log(`PUT: Success | Resource: ${product.product_name}}.`);
@@ -55,8 +54,7 @@ const consumer = async (messageString) => {
       try {
         const result = await Product.findOneAndUpdate(
           { product_name: product.product_name },
-          product,
-          { new: false }
+          product
         );
 
         console.log(`PATCH: Success | Resource: ${product.product_name}}.`);
