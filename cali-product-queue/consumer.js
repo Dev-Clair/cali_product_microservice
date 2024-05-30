@@ -40,11 +40,13 @@ const consumer = async (messageString) => {
     case "PUT":
       try {
         const result = await Product.findOneAndReplace(
-          { product_name: product.product_name },
+          { product_id: product.product_id },
           product
         );
 
-        console.log(`PUT: Success | Resource: ${product.product_name}}.`);
+        console.log(
+          `PUT: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
+        );
       } catch (error) {
         console.error(`PUT: Failure | Error: ${error.message}.`);
       }
@@ -53,11 +55,13 @@ const consumer = async (messageString) => {
     case "PATCH":
       try {
         const result = await Product.findOneAndUpdate(
-          { product_name: product.product_name },
+          { product_id: product.product_id },
           product
         );
 
-        console.log(`PATCH: Success | Resource: ${product.product_name}}.`);
+        console.log(
+          `PATCH: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
+        );
       } catch (error) {
         console.error(`PATCH: Failure | Error: ${error.message}.`);
       }
@@ -66,10 +70,12 @@ const consumer = async (messageString) => {
     case "DELETE":
       try {
         const result = await Product.findOneAndDelete({
-          product_name: product.product_name,
+          product_id: product.product_id,
         });
 
-        console.log(`DELETE: Success | Resource: ${product.product_name}.`);
+        console.log(
+          `DELETE: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
+        );
       } catch (error) {
         console.error(`DELETE: Failure | Error: ${error.message}.`);
       }

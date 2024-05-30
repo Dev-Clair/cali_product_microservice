@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema(
     product_uuid: {
       type: String,
       required: [true, "A product must have a tracking uuid"],
+      unique: true,
     },
     product_name: {
       type: String,
