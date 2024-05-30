@@ -3,10 +3,10 @@ const slugify = require("slugify");
 
 const productSchema = new mongoose.Schema(
   {
-    // product_id: {
-    //   type: String,
-    //   required: [true, "A product must have a product ID"],
-    // },
+    product_uuid: {
+      type: String,
+      required: [true, "A product must have a tracking uuid"],
+    },
     product_name: {
       type: String,
       trim: true,

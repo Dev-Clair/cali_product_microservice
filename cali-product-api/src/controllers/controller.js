@@ -7,23 +7,25 @@ const retrieveProductApiInfo = (req, res, next) => {
   res.status(200).json({
     name: "cali_product_microservice",
     version: "1.0.0",
-    status: active,
-    collection_operations: [
-      {
-        path: "api/v1/products/",
+    status: "active",
+    guide: {
+      collection_operations: [
+        {
+          path: "/api/v1/products/",
+          allowed: ["GET"],
+          not_allowed: ["POST"],
+        },
+        {
+          path: "/api/v1/products/search",
+          allowed: ["GET"],
+          not_allowed: ["POST"],
+        },
+      ],
+      item_operations: {
+        path: "/api/v1/products/:id",
         allowed: ["GET"],
-        not_allowed: ["POST"],
+        not_allowed: ["PUT", "PATCH", "DELETE"],
       },
-      {
-        path: "api/v1/products/search",
-        allowed: ["GET"],
-        not_allowed: ["POST"],
-      },
-    ],
-    item_operations: {
-      path: "api/v1/products/:id",
-      allowed: ["GET"],
-      not_allowed: ["PUT", "PATCH", "DELETE"],
     },
   });
 };
@@ -55,7 +57,7 @@ const retrieveProductSearch = async (req, res, next) => {
     if (!products) {
       return res
         .status(404)
-        .json({ message: `No products found for query: ${req.query.q}` });
+        .json({ message: `No products found for search: ${req.query.q}` });
     }
 
     res.status(200).json({
