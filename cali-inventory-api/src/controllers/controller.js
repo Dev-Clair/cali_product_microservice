@@ -81,6 +81,9 @@ const createInventory = async (req, res, next) => {
 
     const inventories = await Inventory.create(inventory);
 
+    // Send message to queue
+
+    // Send http response
     res.status(201).json({
       status: "Created",
       message: "New Item added to inventory collection",
@@ -105,6 +108,10 @@ const replaceInventory = async (req, res, next) => {
         .status(404)
         .json({ message: `No item found for inventory id: ${req.params.id}` });
     }
+
+    // Send message to queue
+
+    // Send http response
 
     res.status(200).json({
       status: "Modified",
@@ -131,6 +138,10 @@ const updateInventory = async (req, res, next) => {
         .json({ message: `No item found for inventory id: ${req.params.id}` });
     }
 
+    // Send message to queue
+
+    // Send http response
+
     res.status(200).json({
       status: "Modified",
       message: `Item with id: ${req.params.id} modified`,
@@ -152,6 +163,10 @@ const deleteInventory = async (req, res, next) => {
         .status(404)
         .json({ message: `No item found for inventory id: ${req.params.id}` });
     }
+
+    // Send message to queue
+
+    // Send http response
 
     res.status(204).json({
       status: "Deleted",
