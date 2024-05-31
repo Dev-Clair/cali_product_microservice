@@ -53,7 +53,7 @@ const inventorySchema = new mongoose.Schema(
 );
 
 // Document Middleware
-productSchema.pre("save", function (next) {
+inventorySchema.pre("save", function (next) {
   if (this.product_name) {
     this.product_slug = slugify(this.product_name, {
       lower: true,
