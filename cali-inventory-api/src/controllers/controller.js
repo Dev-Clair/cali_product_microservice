@@ -32,6 +32,21 @@ const retrieveInventoryApiInfo = (req, res, next) => {
 };
 
 /**
+ * Processes message before publishing to queue
+ */
+const publishInventoryEvent = async (event) => {
+  console.log(event);
+
+  let message = event;
+  message.product_uuid = message._id;
+
+  delete message._id;
+  console.log(message);
+
+  // cali_product_queue(message);
+};
+
+/**
  * Retrieve an existing or collection of inventories based on search parameter.
  */
 const retrieveInventorySearch = async (req, res, next) => {
@@ -83,7 +98,13 @@ const createInventory = async (req, res, next) => {
 
     const inventories = await Inventory.create(inventory);
 
-    // Send message to queue
+    // Publish to queue
+    const event = {
+      operation: "POST",
+      product: inventories,
+    };
+
+    publishInventoryEvent(event);
 
     // Send http response
     res.status(201).json({
@@ -110,7 +131,13 @@ const replaceInventory = async (req, res, next) => {
       });
     }
 
-    // Send message to queue
+    // Publish to queue
+    const event = {
+      operation: "PUT",
+      product: inventory,
+    };
+
+    publishInventoryEvent(event);
 
     // Send http response
     res.status(204).json({
@@ -137,7 +164,13 @@ const updateInventory = async (req, res, next) => {
       });
     }
 
-    // Send message to queue
+    // Publish to queue
+    const event = {
+      operation: "PATCH",
+      product: inventory,
+    };
+
+    publishInventoryEvent(event);
 
     // Send http response
     res.status(204).json({
@@ -161,7 +194,13 @@ const deleteInventory = async (req, res, next) => {
       });
     }
 
-    // Send message to queue
+    // Publish to queue
+    const event = {
+      operation: "DELETE",
+      product: inventory,
+    };
+
+    publishInventoryEvent(event);
 
     // Send http response
     res.status(204).json({
