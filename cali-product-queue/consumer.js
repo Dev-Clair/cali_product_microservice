@@ -40,7 +40,7 @@ const consumer = async (messageString) => {
     case "PUT":
       try {
         const result = await Product.findOneAndReplace(
-          { product_id: product.product_id },
+          { product_uuid: product.product_uuid },
           product
         );
 
@@ -55,7 +55,7 @@ const consumer = async (messageString) => {
     case "PATCH":
       try {
         const result = await Product.findOneAndUpdate(
-          { product_id: product.product_id },
+          { product_uuid: product.product_uuid },
           product
         );
 
@@ -70,7 +70,7 @@ const consumer = async (messageString) => {
     case "DELETE":
       try {
         const result = await Product.findOneAndDelete({
-          product_id: product.product_id,
+          product_uuid: product.product_uuid,
         });
 
         console.log(
