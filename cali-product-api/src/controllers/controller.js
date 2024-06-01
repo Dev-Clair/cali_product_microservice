@@ -56,7 +56,7 @@ const retrieveProductSearch = async (req, res, next) => {
     });
 
     if (!products) {
-      return res
+      res
         .status(404)
         .json({ message: `No products found for search: ${req.query.q}` });
     }
@@ -78,7 +78,7 @@ const retrieveProductItem = async (req, res, next) => {
     const product = await Product.findById({ _id: req.params.id });
 
     if (!product) {
-      return res
+      res
         .status(404)
         .json({ message: `No product found for id: ${req.params.id}` });
     }
