@@ -1,9 +1,9 @@
-const { consumer } = require("./consumer");
+const { Consumer } = require("./consumer");
 
 exports.consume = async (event) => {
   for (const record of event.Records) {
-    await consumer(record.body).catch(() => {
-      console.error(`Process terminated: ${error.message}.`);
+    await Consumer(record.body).catch((err) => {
+      console.error(`Process terminated: ${err.message}.`);
     });
   }
 };

@@ -1,45 +1,36 @@
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 const { Product } = require("./model");
+const { Connection } = require("./connection");
 
-// Load Environment Variables
 dotenv.config(".env");
 
-const consumer = async (messageString) => {
-  const message = JSON.parse(messageString);
+const Consumer = async (messageBody) => {
+  const message = JSON.parse(messageBody);
 
   const operation = message.operation;
 
   const product = message.product;
 
-  const connectionString = process.env.MONGO_URI;
+  const connection_uri = process.env.MONGO_URI;
 
-  // Establish Database Connection
-  const databaseConnection = await mongoose.connect(connectionString);
+  await Connection(connection_uri);
 
-  databaseConnection
-    .then(() => {
-      console.log(`Database Connection Successful.`);
-    })
-    .catch((error) => {
-      console.error(`Database Connection Unsuccessful: ${error.message}.`);
-    });
-
-  // Persist Operation
   switch (operation) {
     case "POST":
       try {
-        const result = await Product.create(product);
+        const product = await Product.create(product);
 
-        console.log(`POST: Success | Resource: (${true}).`);
-      } catch (error) {
-        console.error(`POST: Failure | Error: ${error.message}.\n`);
+        console.log(
+          `POST: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
+        );
+      } catch (err) {
+        console.error(`POST: Failure | Error: ${err.message}.\n`);
       }
       break;
 
     case "PUT":
       try {
-        const result = await Product.findOneAndReplace(
+        const product = await Product.findOneAndReplace(
           { product_uuid: product.product_uuid },
           product
         );
@@ -47,14 +38,14 @@ const consumer = async (messageString) => {
         console.log(
           `PUT: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
         );
-      } catch (error) {
-        console.error(`PUT: Failure | Error: ${error.message}.`);
+      } catch (err) {
+        console.error(`PUT: Failure | Error: ${err.message}.`);
       }
       break;
 
     case "PATCH":
       try {
-        const result = await Product.findOneAndUpdate(
+        const product = await Product.findOneAndUpdate(
           { product_uuid: product.product_uuid },
           product
         );
@@ -62,22 +53,22 @@ const consumer = async (messageString) => {
         console.log(
           `PATCH: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
         );
-      } catch (error) {
-        console.error(`PATCH: Failure | Error: ${error.message}.`);
+      } catch (err) {
+        console.error(`PATCH: Failure | Error: ${err.message}.`);
       }
       break;
 
     case "DELETE":
       try {
-        const result = await Product.findOneAndDelete({
+        const product = await Product.findOneAndDelete({
           product_uuid: product.product_uuid,
         });
 
         console.log(
           `DELETE: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
         );
-      } catch (error) {
-        console.error(`DELETE: Failure | Error: ${error.message}.`);
+      } catch (err) {
+        console.error(`DELETE: Failure | Error: ${err.message}.`);
       }
       break;
 
@@ -89,4 +80,4 @@ const consumer = async (messageString) => {
   }
 };
 
-module.exports = { consumer };
+module.exports = { Consumer };
