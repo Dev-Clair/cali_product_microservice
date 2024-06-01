@@ -1,5 +1,5 @@
 const { Inventory } = require("../models/model");
-const { cali_product_queue } = require("../sqs/sqs");
+// const { cali_product_queue } = require("../sqs/sqs");
 
 /**
  * Retrieve information about the inventory API.
@@ -32,16 +32,47 @@ const retrieveInventoryApiInfo = (req, res, next) => {
 };
 
 /**
+ * Transforms message before publishing to queue
+ */
+const transformMessage = (inventory) => {
+  const {
+    _id,
+    product_name,
+    product_description,
+    product_price,
+    product_stock_quantity,
+    product_warranty,
+    product_colors,
+    product_sizes,
+    product_weight,
+    product_image_path,
+    product_category,
+    product_slug,
+  } = inventory;
+
+  const product = {
+    product_uuid: _id,
+    product_name: product_name,
+    product_description: product_description,
+    product_price: product_price,
+    product_stock_quantity: product_stock_quantity,
+    product_warranty: product_warranty,
+    product_colors: product_colors,
+    product_sizes: product_sizes,
+    product_weight: product_weight,
+    product_image_path: product_image_path,
+    product_category: product_category,
+    product_slug: product_slug,
+  };
+
+  return product;
+};
+
+/**
  * Processes message before publishing to queue
  */
 const publishInventoryEvent = async (event) => {
   console.log(event);
-
-  let message = event;
-  message.product_uuid = message._id;
-
-  delete message._id;
-  console.log(message);
 
   // cali_product_queue(message);
 };
@@ -94,14 +125,12 @@ const retrieveInventoryItem = async (req, res, next) => {
  */
 const createInventory = async (req, res, next) => {
   try {
-    const inventory = req.params.body;
+    const inventory = await Inventory.create(req.body);
 
-    const inventories = await Inventory.create(inventory);
-
-    // Publish to queue
+    // Publish create event to queue
     const event = {
       operation: "POST",
-      product: inventories,
+      product: transformMessage(inventory),
     };
 
     publishInventoryEvent(event);
@@ -122,7 +151,8 @@ const replaceInventory = async (req, res, next) => {
   try {
     const inventory = await Inventory.findByIdAndUpdate(
       { _id: req.params.id },
-      req.params.body
+      { $set: req.body },
+      { new: true }
     );
 
     if (!inventory) {
@@ -131,18 +161,16 @@ const replaceInventory = async (req, res, next) => {
       });
     }
 
-    // Publish to queue
+    // Publish put event to queue
     const event = {
       operation: "PUT",
-      product: inventory,
+      product: transformMessage(inventory),
     };
 
     publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json({
-      message: `Item with id: ${req.params.id} modified`,
-    });
+    res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -155,7 +183,8 @@ const updateInventory = async (req, res, next) => {
   try {
     const inventory = await Inventory.findByIdAndUpdate(
       { _id: req.params.id },
-      req.params.body
+      { $set: req.body },
+      { new: true }
     );
 
     if (!inventory) {
@@ -164,18 +193,16 @@ const updateInventory = async (req, res, next) => {
       });
     }
 
-    // Publish to queue
+    // Publish patch event to queue
     const event = {
       operation: "PATCH",
-      product: inventory,
+      product: transformMessage(inventory),
     };
 
     publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json({
-      message: `Item with id: ${req.params.id} modified`,
-    });
+    res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -194,18 +221,16 @@ const deleteInventory = async (req, res, next) => {
       });
     }
 
-    // Publish to queue
+    // Publish delete event to queue
     const event = {
       operation: "DELETE",
-      product: inventory,
+      product: transformMessage(inventory._id),
     };
 
     publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json({
-      message: `Item with id: ${req.params.id} deleted`,
-    });
+    res.status(204).json();
   } catch (err) {
     next(err);
   }
