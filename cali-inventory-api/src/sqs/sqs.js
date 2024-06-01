@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
 const { SendMessageCommand, SQSClient } = require("aws-sdk/clients/sqs");
-// import { SendMessageCommand, SQSClient } from "@aws-sdk/clients/sqs";
 
 dotenv.config("../../env");
 
