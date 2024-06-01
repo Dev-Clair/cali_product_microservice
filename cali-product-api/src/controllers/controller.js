@@ -1,21 +1,31 @@
 const { Product } = require("../models/model");
 
 /**
- * Retrieve information about the API.
+ * Retrieve information about the Product API.
  */
-const retrieveApiInfo = (req, res, next) => {
+const retrieveProductApiInfo = (req, res, next) => {
   res.status(200).json({
     name: "cali_product_microservice",
     version: "1.0.0",
-    collection_operations: {
-      path: "api/v1/products/search?q=",
-      allowed: ["GET"],
-      not_allowed: ["POST"],
-    },
-    item_operations: {
-      path: "api/v1/products/:id",
-      allowed: ["GET"],
-      not_allowed: ["PUT", "PATCH", "DELETE"],
+    status: "active",
+    guide: {
+      collection_operations: [
+        {
+          path: "/api/v1/products/",
+          allowed: ["GET"],
+          not_allowed: ["POST"],
+        },
+        {
+          path: "/api/v1/products/search",
+          allowed: ["GET"],
+          not_allowed: ["POST"],
+        },
+      ],
+      item_operations: {
+        path: "/api/v1/products/:id",
+        allowed: ["GET"],
+        not_allowed: ["PUT", "PATCH", "DELETE"],
+      },
     },
   });
 };
@@ -26,6 +36,7 @@ const retrieveApiInfo = (req, res, next) => {
 const retrieveProductCollection = async (req, res, next) => {
   try {
     const products = await Product.find();
+
     res.status(200).json({
       count: products.length,
       products: products,
@@ -45,9 +56,9 @@ const retrieveProductSearch = async (req, res, next) => {
     });
 
     if (!products) {
-      return res
+      res
         .status(404)
-        .json({ message: `No products found for query: ${req.query.q}` });
+        .json({ message: `No products found for search: ${req.query.q}` });
     }
 
     res.status(200).json({
@@ -64,10 +75,10 @@ const retrieveProductSearch = async (req, res, next) => {
  */
 const retrieveProductItem = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById({ _id: req.params.id });
 
     if (!product) {
-      return res
+      res
         .status(404)
         .json({ message: `No product found for id: ${req.params.id}` });
     }
@@ -86,7 +97,7 @@ const methodNotAllowed = (req, res) => {
 };
 
 module.exports = {
-  retrieveApiInfo,
+  retrieveProductApiInfo,
   retrieveProductSearch,
   retrieveProductCollection,
   retrieveProductItem,

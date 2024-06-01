@@ -18,7 +18,7 @@ app.use((err, req, res, next) => {
 });
 
 // Define Routes
-app.use("/api/v1/products", Router.Router);
+app.use("/api/v1/inventories", Router.Router);
 
 app.all("*", (req, res, next) => {
   res.status(404).json({

@@ -1,22 +1,17 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
 
-const productSchema = new mongoose.Schema(
+const inventorySchema = new mongoose.Schema(
   {
-    product_uuid: {
-      type: String,
-      required: [true, "A product must have a tracking uuid"],
-      unique: true,
-    },
     product_name: {
       type: String,
       trim: true,
-      required: [true, "A product must have a name"],
+      required: [true, "An inventory must have a name"],
     },
     product_description: {
       type: String,
       trim: true,
-      required: [true, "A product must have a description"],
+      required: [true, "An inventory must have a description"],
     },
     product_slug: {
       type: String,
@@ -24,11 +19,11 @@ const productSchema = new mongoose.Schema(
     },
     product_price: {
       type: mongoose.Decimal128,
-      required: [true, "A product must have a price"],
+      required: [true, "An inventory must have a price"],
     },
     product_stock_quantity: {
       type: Number,
-      required: [true, "A product must have a stock_quantity"],
+      required: [true, "An inventory must have a stock_quantity"],
       select: true,
     },
     product_warranty: {
@@ -48,7 +43,7 @@ const productSchema = new mongoose.Schema(
     product_category: {
       type: String,
       trim: true,
-      required: [true, "A product must have a category"],
+      required: [true, "An inventory must have a category"],
     },
   },
   {
@@ -58,7 +53,7 @@ const productSchema = new mongoose.Schema(
 );
 
 // Document Middleware
-productSchema.pre("save", function (next) {
+inventorySchema.pre("save", function (next) {
   if (this.product_name) {
     this.product_slug = slugify(this.product_name, {
       lower: true,
@@ -68,15 +63,6 @@ productSchema.pre("save", function (next) {
   next();
 });
 
-// Virtual Properties
-productSchema.virtual("product_status").get(function () {
-  if (this.product_stock_quantity > 0) {
-    return "AVAILABLE";
-  }
+const Inventory = mongoose.model("Inventory", inventorySchema);
 
-  return "OUT-OF-STOCK";
-});
-
-const Product = mongoose.model("Product", productSchema);
-
-module.exports = { Product };
+module.exports = { Inventory };

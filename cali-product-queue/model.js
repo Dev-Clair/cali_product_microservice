@@ -3,10 +3,11 @@ const slugify = require("slugify");
 
 const productSchema = new mongoose.Schema(
   {
-    // product_id: {
-    //   type: String,
-    //   required: [true, "A product must have a product ID"],
-    // },
+    product_uuid: {
+      type: String,
+      required: [true, "A product must have a tracking uuid"],
+      unique: true,
+    },
     product_name: {
       type: String,
       trim: true,
@@ -67,15 +68,6 @@ productSchema.pre("save", function (next) {
   next();
 });
 
-// Virtual Properties
-productSchema.virtual("product_status").get(function () {
-  if (this.product_stock_quantity > 0) {
-    return "AVAILABLE";
-  }
-
-  return "OUT-OF-STOCK";
-});
-
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = { productSchema };
+module.exports = { Product };

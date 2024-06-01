@@ -1,23 +1,17 @@
 const serverless = require("serverless-http");
-const express = require("express");
-const app = express();
+const dotenv = require("dotenv");
+const app = require("./app");
+const { Connection } = require("./connection");
 
-app.get("/", (req, res, next) => {
-  return res.status(200).json({
-    message: "Hello from root!",
-  });
+process.on("unCaughtException", () => {
+  console.warn("unCaughtException: Shutting down gracefully");
+  process.exit(1);
 });
 
-app.get("/hello", (req, res, next) => {
-  return res.status(200).json({
-    message: "Hello from path!",
-  });
-});
+dotenv.config(".env");
 
-app.use((req, res, next) => {
-  return res.status(404).json({
-    error: "Not Found",
-  });
-});
+const connection_uri = process.env.MONGO_URI;
+
+Connection(connection_uri);
 
 exports.inventory = serverless(app);
