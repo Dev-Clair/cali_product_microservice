@@ -5,20 +5,44 @@ const { Inventory } = require("../models/model");
  * Transforms message before publishing to queue
  */
 const transformInventory = (inventory) => {
-  return (product = {
+  const product = {
     product_uuid: inventory._id,
-    product_name: inventory.product_name,
-    product_description: inventory.product_description,
-    product_price: inventory.product_price,
-    product_stock_quantity: inventory.product_stock_quantity,
-    product_warranty: inventory.product_warranty,
-    product_colors: inventory.product_colors,
-    product_sizes: inventory.product_sizes,
-    product_weight: inventory.product_weight,
-    product_image_path: inventory.product_image_path,
-    product_category: inventory.product_category,
-    product_slug: inventory.product_slug,
-  });
+  };
+
+  if (inventory.product_name !== undefined)
+    product.product_name = inventory.product_name;
+
+  if (inventory.product_description !== undefined)
+    product.product_description = inventory.product_description;
+
+  if (inventory.product_price !== undefined)
+    product.product_price = inventory.product_price;
+
+  if (inventory.product_stock_quantity !== undefined)
+    product.product_stock_quantity = inventory.product_stock_quantity;
+
+  if (inventory.product_warranty !== undefined)
+    product.product_warranty = inventory.product_warranty;
+
+  if (inventory.product_colors !== undefined)
+    product.product_colors = inventory.product_colors;
+
+  if (inventory.product_sizes !== undefined)
+    product.product_sizes = inventory.product_sizes;
+
+  if (inventory.product_weight !== undefined)
+    product.product_weight = inventory.product_weight;
+
+  if (inventory.product_image_path !== undefined)
+    product.product_image_path = inventory.product_image_path;
+
+  if (inventory.product_category !== undefined)
+    product.product_category = inventory.product_category;
+
+  if (inventory.product_slug !== undefined)
+    product.product_slug = inventory.product_slug;
+
+  return product;
 };
 
 /**
@@ -150,7 +174,7 @@ const replaceInventory = async (req, res, next) => {
       product: transformInventory(inventory),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
     return res.status(204).json();
@@ -182,7 +206,7 @@ const updateInventory = async (req, res, next) => {
       product: transformInventory(inventory),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
     return res.status(204).json();
@@ -210,7 +234,7 @@ const deleteInventory = async (req, res, next) => {
       product: transformInventory(inventory._id),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
     return res.status(204).json();
