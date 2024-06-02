@@ -12,8 +12,6 @@ const maxRetries = 5;
 const Connect = async () => {
   const connectionUri = process.env.MONGO_URI;
   try {
-    console.log(`Attempting to connect.`);
-
     await DbConnection.connect(connectionUri, {
       serverSelectionTimeoutMS: 10000,
     });
@@ -28,26 +26,26 @@ const Connect = async () => {
       setTimeout(Connect, retryDelay);
     } else {
       console.log(
-        `Max retries reached. Could not establish connection to database:\n${err.message}`
+        `Database connection error.\nMax retries reached, Could not establish connection to database:\n${err.message}`
       );
     }
   }
 };
 
-DbConnection.connection.on("connected", () => {
-  console.log("Database connection successful");
+DbConnection.connection.on("connecting", () => {
+  console.log(`Attempting to connect`);
 });
 
-DbConnection.connection.on("reconnected", () => {
-  console.log("Database reconnection successful");
+DbConnection.connection.on("connected", () => {
+  console.log("Database connection successful");
 });
 
 DbConnection.connection.on("disconnected", () => {
   console.log("Database connection failure");
 });
 
-DbConnection.connection.on("error", (err) => {
-  console.log(`Database connection error`);
+DbConnection.connection.on("reconnected", () => {
+  console.log("Database reconnection successful");
 });
 
 Connect();
