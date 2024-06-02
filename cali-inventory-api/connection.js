@@ -27,7 +27,9 @@ const Connect = async () => {
 
       setTimeout(Connect, retryDelay);
     } else {
-      console.log("Max retries reached. Could not reconnect to database.");
+      console.log(
+        `Max retries reached. Could not establish connection to database:\n${err.message}`
+      );
     }
   }
 };
@@ -45,7 +47,7 @@ DbConnection.connection.on("disconnected", () => {
 });
 
 DbConnection.connection.on("error", (err) => {
-  console.log(`Database connection error: ${err.message}`);
+  console.log(`Database connection error`);
 });
 
 Connect();
