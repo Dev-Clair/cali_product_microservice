@@ -18,6 +18,25 @@ app.use(hpp());
 
 app.use(express_mongo_sanitize());
 
+// Define Routes
+app.use("/api/v1/products", Router.Router);
+
+app.all("*", (req, res, next) => {
+  return res.status(404).json({
+    message: `No resource or route defined for ${req.originalUrl}`,
+  });
+});
+
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400) {
+    console.error({ status: `${err.status}`, message: `${err.message}` });
+
+    return res.status(400).json({ message: "Bad JSON" });
+  }
+
+  next(err);
+});
+
 app.use((err, req, res, next) => {
   console.error(err.message);
 
@@ -26,15 +45,6 @@ app.use((err, req, res, next) => {
   }
 
   return;
-});
-
-// Define Routes
-app.use("/api/v1/products", Router.Router);
-
-app.all("*", (req, res, next) => {
-  return res.status(404).json({
-    message: `No resource or route defined for ${req.originalUrl}`,
-  });
 });
 
 module.exports = app;
