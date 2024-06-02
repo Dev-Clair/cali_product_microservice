@@ -14,9 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(helmet());
 
-app.use(hpp);
+app.use(hpp());
 
-app.use(express_mongo_sanitize);
+app.use(express_mongo_sanitize());
 
 app.use((err, req, res, next) => {
   console.error(err.message);
