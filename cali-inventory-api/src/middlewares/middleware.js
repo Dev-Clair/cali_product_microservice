@@ -12,7 +12,7 @@ const checkRequestContentType = (req, res, next) => {
   next();
 };
 
-const checkRequestSecurity = () => {
+const checkRequestSecurity = (req, res, next) => {
   const get_protocol = req.protocol;
 
   const get_security = req.secure;
