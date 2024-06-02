@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const hpp = require("hpp");
+const express_mongo_sanitize = require("express-mongo-sanitize");
 const Router = require("./src/routers/router");
 
 // Create an Express Application Instance
@@ -9,7 +10,13 @@ const app = express();
 // Define Middlewares
 app.use(express.json());
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(helmet());
+
+app.use(hpp());
+
+app.use(express_mongo_sanitize());
 
 app.use((err, req, res, next) => {
   res.send(500).json({ message: "Internal Server Error" });
