@@ -1,4 +1,4 @@
-const { Product } = require("./model");
+const Product = require("./model");
 
 const Consumer = async (messageBody) => {
   const message = JSON.parse(messageBody);
@@ -72,4 +72,4 @@ const Consumer = async (messageBody) => {
   }
 };
 
-module.exports = { Consumer };
+module.exports = Consumer;

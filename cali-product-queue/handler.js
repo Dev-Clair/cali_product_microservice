@@ -1,4 +1,4 @@
-const { Consumer } = require("./consumer");
+const Consumer = require("./consumer");
 const getDbConnection = require("./connection");
 
 getDbConnection;
