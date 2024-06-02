@@ -1,8 +1,4 @@
-const dotenv = require("dotenv");
 const { Product } = require("./model");
-const { Connection } = require("./connection");
-
-dotenv.config(".env");
 
 const Consumer = async (messageBody) => {
   const message = JSON.parse(messageBody);
@@ -10,10 +6,6 @@ const Consumer = async (messageBody) => {
   const operation = message.operation;
 
   const product = message.product;
-
-  const connection_uri = process.env.MONGO_URI;
-
-  await Connection(connection_uri);
 
   switch (operation) {
     case "POST":
