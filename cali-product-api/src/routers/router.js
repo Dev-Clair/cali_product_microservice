@@ -6,7 +6,7 @@ const Router = express.Router();
 
 Router.route("/")
   .get(Controller.retrieveProductCollection)
-  .post(Middleware.checkRequestContentType, Controller.methodNotAllowed);
+  .post(Controller.methodNotAllowed);
 
 Router.route("/info").get(Controller.retrieveProductApiInfo);
 
@@ -14,8 +14,8 @@ Router.route("/search").get(Controller.retrieveProductSearch);
 
 Router.route("/:id")
   .get(Controller.retrieveProductItem)
-  .put(Middleware.checkRequestContentType, Controller.methodNotAllowed)
-  .patch(Middleware.checkRequestContentType, Controller.methodNotAllowed)
+  .put(Controller.methodNotAllowed)
+  .patch(Controller.methodNotAllowed)
   .delete(Controller.methodNotAllowed);
 
 module.exports = { Router };
