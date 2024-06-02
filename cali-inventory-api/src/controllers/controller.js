@@ -138,7 +138,7 @@ const createInventory = async (req, res, next) => {
       product: transformInventory(inventory),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
     return res.status(201).json({
