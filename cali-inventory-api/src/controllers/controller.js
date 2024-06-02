@@ -5,7 +5,7 @@ const { Inventory } = require("../models/model");
  * Retrieve information about the inventory API.
  */
 const retrieveInventoryApiInfo = (req, res, next) => {
-  res.status(200).json({
+  return res.status(200).json({
     name: "cali_inventory_microservice",
     version: "1.0.0",
     status: "active",
@@ -92,7 +92,7 @@ const retrieveInventorySearch = async (req, res, next) => {
         .json({ message: `No inventories found for query: ${req.query.q}` });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       count: inventories.length,
       inventories: inventories,
     });
@@ -114,7 +114,7 @@ const retrieveInventoryItem = async (req, res, next) => {
         .json({ message: `No item found for inventory id: ${req.params.id}` });
     }
 
-    res.status(200).json({ inventory: inventory });
+    return res.status(200).json({ inventory: inventory });
   } catch (err) {
     next(err);
   }
@@ -136,7 +136,7 @@ const createInventory = async (req, res, next) => {
     publishInventoryEvent(event);
 
     // Send http response
-    res.status(201).json({
+    return res.status(201).json({
       message: "New item added to inventory collection",
     });
   } catch (err) {
@@ -170,7 +170,7 @@ const replaceInventory = async (req, res, next) => {
     publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json();
+    return res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -202,7 +202,7 @@ const updateInventory = async (req, res, next) => {
     publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json();
+    return res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -230,7 +230,7 @@ const deleteInventory = async (req, res, next) => {
     publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json();
+    return res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -240,7 +240,7 @@ const deleteInventory = async (req, res, next) => {
  * Handle not allowed methods: GET
  */
 const methodNotAllowed = (req, res) => {
-  res.status(405).json({
+  return res.status(405).json({
     message: "Cannot retrieve inventory resource",
   });
 };

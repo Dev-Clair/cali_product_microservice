@@ -4,7 +4,7 @@ const { Product } = require("../models/model");
  * Retrieve information about the Product API.
  */
 const retrieveProductApiInfo = (req, res, next) => {
-  res.status(200).json({
+  return res.status(200).json({
     name: "cali_product_microservice",
     version: "1.0.0",
     status: "active",
@@ -37,7 +37,7 @@ const retrieveProductCollection = async (req, res, next) => {
   try {
     const products = await Product.find();
 
-    res.status(200).json({
+    return res.status(200).json({
       count: products.length,
       products: products,
     });
@@ -56,12 +56,12 @@ const retrieveProductSearch = async (req, res, next) => {
     });
 
     if (!products) {
-      res
+      return res
         .status(404)
         .json({ message: `No products found for search: ${req.query.q}` });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       count: products.length,
       products: products,
     });
@@ -78,12 +78,12 @@ const retrieveProductItem = async (req, res, next) => {
     const product = await Product.findById({ _id: req.params.id });
 
     if (!product) {
-      res
+      return res
         .status(404)
         .json({ message: `No product found for id: ${req.params.id}` });
     }
 
-    res.status(200).json({ product: product });
+    return res.status(200).json({ product: product });
   } catch (err) {
     next(err);
   }
@@ -93,7 +93,7 @@ const retrieveProductItem = async (req, res, next) => {
  * Handle not allowed methods: POST | PUT | PATCH | DELETE.
  */
 const methodNotAllowed = (req, res) => {
-  res.status(405).json({ message: "Method Not Allowed" });
+  return res.status(405).json({ message: "Method Not Allowed" });
 };
 
 module.exports = {
