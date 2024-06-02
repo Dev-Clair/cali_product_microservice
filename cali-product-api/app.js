@@ -21,6 +21,7 @@ app.use(express_mongo_sanitize());
 app.use((err, req, res, next) => {
   res.send(500).json({ message: "Internal Server Error" });
   console.error(err.message);
+
   next();
 });
 
@@ -28,7 +29,7 @@ app.use((err, req, res, next) => {
 app.use("/api/v1/products", Router.Router);
 
 app.all("*", (req, res, next) => {
-  res.status(404).json({
+  return res.status(404).json({
     message: `No resource or route defined for ${req.originalUrl}`,
   });
 });

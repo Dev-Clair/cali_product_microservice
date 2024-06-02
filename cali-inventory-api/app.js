@@ -14,13 +14,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(helmet());
 
-app.use(hpp());
+app.use(hpp);
 
-app.use(express_mongo_sanitize());
+app.use(express_mongo_sanitize);
 
 app.use((err, req, res, next) => {
-  res.send(500).json({ message: "Internal Server Error" });
   console.error(err.message);
+  res.send(500).json({ message: "Internal Server Error" });
+
   next();
 });
 
@@ -28,7 +29,7 @@ app.use((err, req, res, next) => {
 app.use("/api/v1/inventories", Router.Router);
 
 app.all("*", (req, res, next) => {
-  res.status(404).json({
+  return res.status(404).json({
     message: `No resource or route defined for ${req.originalUrl}`,
   });
 });
