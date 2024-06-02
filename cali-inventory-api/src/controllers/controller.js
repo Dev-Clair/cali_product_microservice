@@ -2,6 +2,35 @@ const { Inventory } = require("../models/model");
 // const { cali_product_queue } = require("../sqs/sqs");
 
 /**
+ * Transforms message before publishing to queue
+ */
+const transformInventory = (inventory) => {
+  return (product = {
+    product_uuid: inventory._id,
+    product_name: inventory.product_name,
+    product_description: inventory.product_description,
+    product_price: inventory.product_price,
+    product_stock_quantity: inventory.product_stock_quantity,
+    product_warranty: inventory.product_warranty,
+    product_colors: inventory.product_colors,
+    product_sizes: inventory.product_sizes,
+    product_weight: inventory.product_weight,
+    product_image_path: inventory.product_image_path,
+    product_category: inventory.product_category,
+    product_slug: inventory.product_slug,
+  });
+};
+
+/**
+ * Processes message before publishing to queue
+ */
+const publishInventoryEvent = async (event) => {
+  console.log(event);
+
+  // cali_product_queue(message);
+};
+
+/**
  * Retrieve information about the inventory API.
  */
 const retrieveInventoryApiInfo = (req, res, next) => {
@@ -29,35 +58,6 @@ const retrieveInventoryApiInfo = (req, res, next) => {
       },
     },
   });
-};
-
-/**
- * Transforms message before publishing to queue
- */
-const transformInventory = (inventory) => {
-  return (product = {
-    product_uuid: inventory._id,
-    product_name: inventory.product_name,
-    product_description: inventory.product_description,
-    product_price: inventory.product_price,
-    product_stock_quantity: inventory.product_stock_quantity,
-    product_warranty: inventory.product_warranty,
-    product_colors: inventory.product_colors,
-    product_sizes: inventory.product_sizes,
-    product_weight: inventory.product_weight,
-    product_image_path: inventory.product_image_path,
-    product_category: inventory.product_category,
-    product_slug: inventory.product_slug,
-  });
-};
-
-/**
- * Processes message before publishing to queue
- */
-const publishInventoryEvent = async (event) => {
-  console.log(event);
-
-  // cali_product_queue(message);
 };
 
 /**
