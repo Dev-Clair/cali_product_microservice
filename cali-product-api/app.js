@@ -19,10 +19,13 @@ app.use(hpp());
 app.use(express_mongo_sanitize());
 
 app.use((err, req, res, next) => {
-  res.send(500).json({ message: "Internal Server Error" });
   console.error(err.message);
 
-  next();
+  if (!res.headersSent) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+
+  return;
 });
 
 // Define Routes
