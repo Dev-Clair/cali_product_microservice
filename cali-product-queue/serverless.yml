@@ -14,7 +14,7 @@ provider:
 
 functions:
   product-queue-handler:
-    handler: handler.consume
+    handler: handler.consumer
     events:
       - sqs: arn:aws:sqs:${env:AWS_REGION}:${env:AWS_ACCOUNT_ID}:Cali_Product_Queue
     environment:
