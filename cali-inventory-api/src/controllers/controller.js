@@ -34,38 +34,21 @@ const retrieveInventoryApiInfo = (req, res, next) => {
 /**
  * Transforms message before publishing to queue
  */
-const transformMessage = (inventory) => {
-  const {
-    _id,
-    product_name,
-    product_description,
-    product_price,
-    product_stock_quantity,
-    product_warranty,
-    product_colors,
-    product_sizes,
-    product_weight,
-    product_image_path,
-    product_category,
-    product_slug,
-  } = inventory;
-
-  const product = {
-    product_uuid: _id,
-    product_name: product_name,
-    product_description: product_description,
-    product_price: product_price,
-    product_stock_quantity: product_stock_quantity,
-    product_warranty: product_warranty,
-    product_colors: product_colors,
-    product_sizes: product_sizes,
-    product_weight: product_weight,
-    product_image_path: product_image_path,
-    product_category: product_category,
-    product_slug: product_slug,
-  };
-
-  return product;
+const transformInventory = (inventory) => {
+  return (product = {
+    product_uuid: inventory._id,
+    product_name: inventory.product_name,
+    product_description: inventory.product_description,
+    product_price: inventory.product_price,
+    product_stock_quantity: inventory.product_stock_quantity,
+    product_warranty: inventory.product_warranty,
+    product_colors: inventory.product_colors,
+    product_sizes: inventory.product_sizes,
+    product_weight: inventory.product_weight,
+    product_image_path: inventory.product_image_path,
+    product_category: inventory.product_category,
+    product_slug: inventory.product_slug,
+  });
 };
 
 /**
@@ -121,7 +104,7 @@ const retrieveInventoryItem = async (req, res, next) => {
 };
 
 /**
- * Retrieve inventory collection.
+ * Create inventory collection.
  */
 const createInventory = async (req, res, next) => {
   try {
@@ -130,7 +113,7 @@ const createInventory = async (req, res, next) => {
     // Publish create event to queue
     const event = {
       operation: "POST",
-      product: transformMessage(inventory),
+      product: transformInventory(inventory),
     };
 
     publishInventoryEvent(event);
@@ -164,7 +147,7 @@ const replaceInventory = async (req, res, next) => {
     // Publish put event to queue
     const event = {
       operation: "PUT",
-      product: transformMessage(inventory),
+      product: transformInventory(inventory),
     };
 
     publishInventoryEvent(event);
@@ -196,7 +179,7 @@ const updateInventory = async (req, res, next) => {
     // Publish patch event to queue
     const event = {
       operation: "PATCH",
-      product: transformMessage(inventory),
+      product: transformInventory(inventory),
     };
 
     publishInventoryEvent(event);
@@ -224,7 +207,7 @@ const deleteInventory = async (req, res, next) => {
     // Publish delete event to queue
     const event = {
       operation: "DELETE",
-      product: transformMessage(inventory._id),
+      product: transformInventory(inventory._id),
     };
 
     publishInventoryEvent(event);
