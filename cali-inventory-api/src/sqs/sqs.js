@@ -1,9 +1,7 @@
 const dotenv = require("dotenv");
-const { SendMessageCommand, SQS } = require("aws-sdk/clients/sqs");
+const AWS = require("aws-sdk");
 
 dotenv.config("../../env");
-
-const client = SQS;
 
 const Sqs_Queue_Url =
   `arn:aws:sqs:` +
@@ -13,16 +11,22 @@ const Sqs_Queue_Url =
   `:` +
   `Cali_Product_Queue`;
 
+const SQS = new AWS.SQS();
+
 const AWS_SQS = async (Message_Body) => {
-  const command = SendMessageCommand({
+  const SendMessageRequest = {
     QueueUrl: Sqs_Queue_Url,
     DelaySeconds: 15,
     MessageAttributes: {},
     MessageBody: JSON.stringify(Message_Body),
-  });
+  };
+  try {
+    await SQS.sendMessage(SendMessageRequest).promise();
 
-  const response = await client.send(command);
-  console.log(response);
+    console.log(`Message sent to queue`);
+  } catch (err) {
+    console.log(`Cannot send message to queue:\n${err.message}`);
+  }
 };
 
 module.exports = { AWS_SQS };
