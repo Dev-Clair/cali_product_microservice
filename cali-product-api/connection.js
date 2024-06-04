@@ -17,7 +17,7 @@ const Connect = async () => {
     });
   } catch (err) {
     if (currentRetries < maxRetries) {
-      console.log(`Attempting to reconnect.`);
+      console.log(`Attempting reconnection to database.`);
 
       currentRetries++;
 
@@ -33,7 +33,7 @@ const Connect = async () => {
 };
 
 DbConnection.connection.on("connecting", () => {
-  console.log(`Attempting to connect`);
+  console.log(`Attempting connection to database.`);
 });
 
 DbConnection.connection.on("connected", () => {
