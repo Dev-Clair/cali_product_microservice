@@ -1,17 +1,16 @@
 const serverless = require("serverless-http");
-const dotenv = require("dotenv");
 const app = require("./app");
-const { Connection } = require("./connection");
+const getDbConnection = require("./connection");
 
 process.on("unCaughtException", () => {
   console.warn("unCaughtException: Shutting down gracefully");
   process.exit(1);
 });
 
-dotenv.config(".env");
+getDbConnection;
 
-const connection_uri = process.env.MONGO_URI;
-
-Connection(connection_uri);
+// app.listen(3999, () => {
+//   console.log(`Server process started, listening on port 3999`);
+// });
 
 exports.product = serverless(app);

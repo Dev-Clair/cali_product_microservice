@@ -1,11 +1,62 @@
 const { Inventory } = require("../models/model");
-// const { cali_product_queue } = require("../sqs/sqs");
+const { Cali_Product_Queue } = require("../sqs/sqs");
+
+/**
+ * Transforms message before publishing to queue
+ */
+const transformInventory = (inventory) => {
+  const product = {
+    product_uuid: inventory._id,
+  };
+
+  if (inventory.product_name !== undefined)
+    product.product_name = inventory.product_name;
+
+  if (inventory.product_description !== undefined)
+    product.product_description = inventory.product_description;
+
+  if (inventory.product_price !== undefined)
+    product.product_price = inventory.product_price;
+
+  if (inventory.product_stock_quantity !== undefined)
+    product.product_stock_quantity = inventory.product_stock_quantity;
+
+  if (inventory.product_warranty !== undefined)
+    product.product_warranty = inventory.product_warranty;
+
+  if (inventory.product_colors !== undefined)
+    product.product_colors = inventory.product_colors;
+
+  if (inventory.product_sizes !== undefined)
+    product.product_sizes = inventory.product_sizes;
+
+  if (inventory.product_weight !== undefined)
+    product.product_weight = inventory.product_weight;
+
+  if (inventory.product_image_path !== undefined)
+    product.product_image_path = inventory.product_image_path;
+
+  if (inventory.product_category !== undefined)
+    product.product_category = inventory.product_category;
+
+  if (inventory.product_slug !== undefined)
+    product.product_slug = inventory.product_slug;
+
+  return product;
+};
+
+/**
+ * Publish event to queue
+ */
+const publishInventoryEvent = async (event) => {
+  Cali_Product_Queue(event);
+};
 
 /**
  * Retrieve information about the inventory API.
  */
 const retrieveInventoryApiInfo = (req, res, next) => {
-  res.status(200).json({
+  return res.status(200).json({
     name: "cali_inventory_microservice",
     version: "1.0.0",
     status: "active",
@@ -32,52 +83,6 @@ const retrieveInventoryApiInfo = (req, res, next) => {
 };
 
 /**
- * Transforms message before publishing to queue
- */
-const transformMessage = (inventory) => {
-  const {
-    _id,
-    product_name,
-    product_description,
-    product_price,
-    product_stock_quantity,
-    product_warranty,
-    product_colors,
-    product_sizes,
-    product_weight,
-    product_image_path,
-    product_category,
-    product_slug,
-  } = inventory;
-
-  const product = {
-    product_uuid: _id,
-    product_name: product_name,
-    product_description: product_description,
-    product_price: product_price,
-    product_stock_quantity: product_stock_quantity,
-    product_warranty: product_warranty,
-    product_colors: product_colors,
-    product_sizes: product_sizes,
-    product_weight: product_weight,
-    product_image_path: product_image_path,
-    product_category: product_category,
-    product_slug: product_slug,
-  };
-
-  return product;
-};
-
-/**
- * Processes message before publishing to queue
- */
-const publishInventoryEvent = async (event) => {
-  console.log(event);
-
-  // cali_product_queue(message);
-};
-
-/**
  * Retrieve an existing or collection of inventories based on search parameter.
  */
 const retrieveInventorySearch = async (req, res, next) => {
@@ -92,7 +97,7 @@ const retrieveInventorySearch = async (req, res, next) => {
         .json({ message: `No inventories found for query: ${req.query.q}` });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       count: inventories.length,
       inventories: inventories,
     });
@@ -114,14 +119,14 @@ const retrieveInventoryItem = async (req, res, next) => {
         .json({ message: `No item found for inventory id: ${req.params.id}` });
     }
 
-    res.status(200).json({ inventory: inventory });
+    return res.status(200).json({ inventory: inventory });
   } catch (err) {
     next(err);
   }
 };
 
 /**
- * Retrieve inventory collection.
+ * Create inventory collection.
  */
 const createInventory = async (req, res, next) => {
   try {
@@ -130,13 +135,13 @@ const createInventory = async (req, res, next) => {
     // Publish create event to queue
     const event = {
       operation: "POST",
-      product: transformMessage(inventory),
+      product: transformInventory(inventory),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
-    res.status(201).json({
+    return res.status(201).json({
       message: "New item added to inventory collection",
     });
   } catch (err) {
@@ -164,13 +169,13 @@ const replaceInventory = async (req, res, next) => {
     // Publish put event to queue
     const event = {
       operation: "PUT",
-      product: transformMessage(inventory),
+      product: transformInventory(inventory),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json();
+    return res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -196,13 +201,13 @@ const updateInventory = async (req, res, next) => {
     // Publish patch event to queue
     const event = {
       operation: "PATCH",
-      product: transformMessage(inventory),
+      product: transformInventory(inventory),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json();
+    return res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -224,13 +229,13 @@ const deleteInventory = async (req, res, next) => {
     // Publish delete event to queue
     const event = {
       operation: "DELETE",
-      product: transformMessage(inventory._id),
+      product: transformInventory(inventory._id),
     };
 
-    publishInventoryEvent(event);
+    await publishInventoryEvent(event);
 
     // Send http response
-    res.status(204).json();
+    return res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -240,7 +245,7 @@ const deleteInventory = async (req, res, next) => {
  * Handle not allowed methods: GET
  */
 const methodNotAllowed = (req, res) => {
-  res.status(405).json({
+  return res.status(405).json({
     message: "Cannot retrieve inventory resource",
   });
 };
