@@ -1,5 +1,5 @@
 const { Inventory } = require("../models/model");
-const { AWS_SQS } = require("../sqs/sqs");
+const { Cali_Product_Queue } = require("../sqs/sqs");
 
 /**
  * Transforms message before publishing to queue
@@ -49,7 +49,7 @@ const transformInventory = (inventory) => {
  * Publish event to queue
  */
 const publishInventoryEvent = async (event) => {
-  AWS_SQS(event);
+  Cali_Product_Queue(event);
 };
 
 /**
