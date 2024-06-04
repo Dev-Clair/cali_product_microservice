@@ -17,7 +17,7 @@ const Connect = async () => {
     });
   } catch (err) {
     if (currentRetries < maxRetries) {
-      console.log(`Attempting reconnection to database.`);
+      console.log(`Attempting reconnection to database`);
 
       currentRetries++;
 
@@ -26,14 +26,14 @@ const Connect = async () => {
       setTimeout(Connect, retryDelay);
     } else {
       console.log(
-        `Database connection error.\nMax retries reached, Could not establish connection to database:\n${err.message}`
+        `Database connection error\nMax retries reached, Could not establish connection to database:\n${err.message}`
       );
     }
   }
 };
 
 DbConnection.connection.on("connecting", () => {
-  console.log(`Attempting connection to database.`);
+  console.log(`Attempting connection to database`);
 });
 
 DbConnection.connection.on("connected", () => {
