@@ -4,6 +4,8 @@ app: product-microservice
 
 service: cali-inventory-api
 
+frameworkVersion: "4"
+
 useDotenv: true
 
 provider:
