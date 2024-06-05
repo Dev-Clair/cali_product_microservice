@@ -21,6 +21,6 @@ functions:
       - httpApi: "*"
     environment:
       NODE_ENV: ${env:NODE_ENV}
-      MONGO_URI: ${env:AWS_MONGO_URI}
+      MONGO_URI: ${env:MONGO_URI}
 
 plugins: serverless-offline

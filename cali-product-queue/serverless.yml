@@ -21,7 +21,7 @@ functions:
       - sqs: arn:aws:sqs:${env:AWS_REGION}:${env:AWS_ACCOUNT_ID}:Cali_Product_Queue
     environment:
       NODE_ENV: ${env:NODE_ENV}
-      MONGO_URI: ${env:AWS_MONGO_URI}
+      MONGO_URI: ${env:MONGO_URI}
 
 resources:
   Resources:
