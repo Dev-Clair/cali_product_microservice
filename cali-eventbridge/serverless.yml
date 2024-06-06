@@ -15,12 +15,14 @@ provider:
   memorySize: 512
 
 functions:
-  hello:
-    handler: handler.hello
+  mongo-aws-inventory-eventbridge:
+    handler: handler.inventoryBus
     events:
-      - httpApi:
-          path: /
-          method: get
+      - eventBridge:
+          eventBus: ${env:CALI_INVENTORY_EVENT_BUS}
+          pattern:
+            source:
+              - AtlasCluster
     environment:
       NODE_ENV: ${env:NODE_ENV}
       MONGO_URI: ${env:MONGO_URI}
