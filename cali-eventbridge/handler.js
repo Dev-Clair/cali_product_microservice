@@ -1,4 +1,5 @@
 const Product = require("./model");
+const transform = require("./transform");
 const getDbConnection = require("./connection");
 
 getDbConnection;
@@ -10,9 +11,11 @@ exports.inventoryBus = async (event) => {
 
   const {
     operationType: operation,
-    fullDocument: product,
+    fullDocument: inventory,
     documentKey: productKey,
   } = payload;
+
+  const product = transform(inventory);
 
   switch (operation) {
     case "insert":
