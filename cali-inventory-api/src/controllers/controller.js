@@ -49,7 +49,7 @@ const transformInventory = (inventory) => {
  * Publish event to queue
  */
 const publishInventoryEvent = async (event) => {
-  Cali_Product_Queue(event);
+  await Cali_Product_Queue(event);
 };
 
 /**
@@ -61,22 +61,37 @@ const retrieveInventoryApiInfo = (req, res, next) => {
     version: "1.0.0",
     status: "active",
     guide: {
-      collection_operations: [
-        {
-          path: "/api/v1/inventories/",
-          allowed: ["POST"],
-          not_allowed: ["GET"],
+      body: {
+        _id,
+        product_name,
+        product_description,
+        product_price,
+        product_stock_quantity,
+        product_warranty,
+        product_colors,
+        product_sizes,
+        product_weight,
+        product_image_path,
+        product_category,
+      },
+      operations: {
+        collectionOperations: [
+          {
+            path: "/api/v1/inventories/",
+            allowed: ["POST"],
+            notAllowed: ["GET"],
+          },
+          {
+            path: "/api/v1/inventories/search",
+            allowed: ["GET"],
+            notAllowed: ["POST"],
+          },
+        ],
+        itemOperations: {
+          path: "/api/v1/inventories/:id",
+          allowed: ["PUT", "PATCH", "DELETE"],
+          notAallowed: ["GET"],
         },
-        {
-          path: "/api/v1/inventories/search",
-          allowed: ["GET"],
-          not_allowed: ["POST"],
-        },
-      ],
-      item_operations: {
-        path: "/api/v1/inventories/:id",
-        allowed: ["PUT", "PATCH", "DELETE"],
-        not_allowed: ["GET"],
       },
     },
   });

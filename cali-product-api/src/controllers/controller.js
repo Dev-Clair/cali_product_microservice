@@ -9,22 +9,37 @@ const retrieveProductApiInfo = (req, res, next) => {
     version: "1.0.0",
     status: "active",
     guide: {
-      collection_operations: [
-        {
-          path: "/api/v1/products/",
+      body: {
+        _id,
+        product_name,
+        product_description,
+        product_price,
+        product_stock_quantity,
+        product_warranty,
+        product_colors,
+        product_sizes,
+        product_weight,
+        product_image_path,
+        product_category,
+      },
+      operations: {
+        collectionOperations: [
+          {
+            path: "/api/v1/products/",
+            allowed: ["GET"],
+            notAllowed: ["POST"],
+          },
+          {
+            path: "/api/v1/products/search",
+            allowed: ["GET"],
+            notAllowed: ["POST"],
+          },
+        ],
+        itemOperations: {
+          path: "/api/v1/products/:id",
           allowed: ["GET"],
-          not_allowed: ["POST"],
+          notAllowed: ["PUT", "PATCH", "DELETE"],
         },
-        {
-          path: "/api/v1/products/search",
-          allowed: ["GET"],
-          not_allowed: ["POST"],
-        },
-      ],
-      item_operations: {
-        path: "/api/v1/products/:id",
-        allowed: ["GET"],
-        not_allowed: ["PUT", "PATCH", "DELETE"],
       },
     },
   });
