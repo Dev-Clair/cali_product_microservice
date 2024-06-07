@@ -1,7 +1,7 @@
 const serverless = require("serverless-http");
 const app = require("./app");
-const getDbConnection = require("./connection");
+const GetDbConnection = require("./connection");
 
-getDbConnection;
+GetDbConnection;
 
 exports.inventory = serverless(app);

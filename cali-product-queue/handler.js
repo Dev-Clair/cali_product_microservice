@@ -1,7 +1,7 @@
 const Product = require("./model");
-const getDbConnection = require("./connection");
+const GetDbConnection = require("./connection");
 
-getDbConnection;
+GetDbConnection;
 
 exports.consumer = async (event) => {
   for (const record of event.Records) {
@@ -14,7 +14,7 @@ exports.consumer = async (event) => {
     switch (operation) {
       case "POST":
         try {
-          const product = await Product.create(product);
+          await Product.create(product);
 
           console.log(
             `POST: Success | Resource uuid: ${product.product_uuid}| Resource name: ${product.product_name}.`
@@ -26,7 +26,7 @@ exports.consumer = async (event) => {
 
       case "PUT":
         try {
-          const product = await Product.findOneAndReplace(
+          await Product.findOneAndReplace(
             { product_uuid: product.product_uuid },
             product
           );
@@ -41,7 +41,7 @@ exports.consumer = async (event) => {
 
       case "PATCH":
         try {
-          const product = await Product.findOneAndUpdate(
+          await Product.findOneAndUpdate(
             { product_uuid: product.product_uuid },
             product
           );
@@ -56,7 +56,7 @@ exports.consumer = async (event) => {
 
       case "DELETE":
         try {
-          const product = await Product.findOneAndDelete({
+          await Product.findOneAndDelete({
             product_uuid: product.product_uuid,
           });
 

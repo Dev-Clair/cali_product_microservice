@@ -1,8 +1,8 @@
 const Product = require("./model");
-const transform = require("./transform");
-const getDbConnection = require("./connection");
+const Transform = require("./transform");
+const GetDbConnection = require("./connection");
 
-getDbConnection;
+GetDbConnection;
 
 exports.inventoryBus = async (event) => {
   let payload;
@@ -12,10 +12,12 @@ exports.inventoryBus = async (event) => {
   const {
     operationType: operation,
     fullDocument: inventory,
-    documentKey: productKey,
+    documentKey: inventoryKey,
   } = payload;
 
-  const product = transform(inventory);
+  const product = Transform(inventory);
+
+  const productKey = inventoryKey;
 
   switch (operation) {
     case "insert":
@@ -59,7 +61,8 @@ const replaceProduct = async (product) => {
   try {
     const replacedProduct = await Product.findOneAndReplace(
       { product_uuid: product.product_uuid },
-      product
+      product,
+      { new: true }
     );
     console.log(
       `REPLACE: Success | RESOURCE UUID: ${replacedProduct.product_uuid} | RESOURCE NAME: ${replacedProduct.product_name}.`
