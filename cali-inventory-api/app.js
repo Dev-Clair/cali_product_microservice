@@ -5,29 +5,29 @@ const express_mongo_sanitize = require("express-mongo-sanitize");
 const Router = require("./src/routers/router");
 
 // Create an Express Application Instance
-const app = express();
+const App = express();
 
 // Define Middlewares
-app.use(express.json());
+App.use(express.json());
 
-app.use(express.urlencoded({ extended: true }));
+App.use(express.urlencoded({ extended: true }));
 
-app.use(helmet());
+App.use(helmet());
 
-app.use(hpp());
+App.use(hpp());
 
-app.use(express_mongo_sanitize());
+App.use(express_mongo_sanitize());
 
 // Define Routes
-app.use("/api/v1/inventories", Router.Router);
+App.use("/api/v1/inventories", Router.Router);
 
-app.all("*", (req, res, next) => {
+App.all("*", (req, res, next) => {
   return res.status(404).json({
     message: `No resource or route defined for ${req.originalUrl}`,
   });
 });
 
-app.use((err, req, res, next) => {
+App.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400) {
     console.error({ status: `${err.status}`, message: `${err.message}` });
 
@@ -37,7 +37,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-app.use((err, req, res, next) => {
+App.use((err, req, res, next) => {
   console.error(err.message);
 
   if (!res.headersSent) {
@@ -47,4 +47,4 @@ app.use((err, req, res, next) => {
   return;
 });
 
-module.exports = app;
+module.exports = App;
