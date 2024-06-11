@@ -2,7 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const hpp = require("hpp");
 const express_mongo_sanitize = require("express-mongo-sanitize");
-const Routes = require("./src/routers");
+const Routes = require("./src/routers/index");
 
 // Create an Express Application Instance
 const App = express();
