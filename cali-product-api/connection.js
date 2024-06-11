@@ -21,7 +21,7 @@ const Connection = async (connectionUri) => {
 
       retryDelay *= 2;
 
-      setTimeout(Connection(connectionUri), retryDelay);
+      setTimeout(() => Connection(connectionUri), retryDelay);
     } else {
       console.log(
         `Database connection error\nMax retries reached, Could not establish connection to database:\n${err.message}`
