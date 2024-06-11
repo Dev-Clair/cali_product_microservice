@@ -2,7 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const hpp = require("hpp");
 const express_mongo_sanitize = require("express-mongo-sanitize");
-const Router = require("./src/routers/router");
+const Routes = require("./src/routers");
 
 // Create an Express Application Instance
 const App = express();
@@ -19,7 +19,7 @@ App.use(hpp());
 App.use(express_mongo_sanitize());
 
 // Define Routes
-App.use("/api/v1", Router.Router);
+App.use("/api", Routes);
 
 App.all("*", (req, res, next) => {
   return res.status(404).json({
