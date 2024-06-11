@@ -1,4 +1,4 @@
-const { Product } = require("../models/model");
+const { Product } = require("../../models/model");
 
 /**
  * Retrieve information about the Product API.
