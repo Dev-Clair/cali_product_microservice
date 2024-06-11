@@ -2,20 +2,20 @@ const express = require("express");
 const Middleware = require("../middlewares/middleware");
 const Controller = require("../controllers/controller");
 
-const Router = express.Router();
+const RouterV1 = express.Router();
 
-Router.route("/")
+RouterV1.route("/")
   .get(Controller.methodNotAllowed)
   .post(Middleware.checkRequestContentType, Controller.createInventory);
 
-Router.route("/info").get(Controller.retrieveInventoryApiInfo);
+RouterV1.route("/info").get(Controller.retrieveInventoryApiInfo);
 
-Router.route("/search").get(Controller.retrieveInventorySearch);
+RouterV1.route("/search").get(Controller.retrieveInventorySearch);
 
-Router.route("/:id")
+RouterV1.route("/:id")
   .get(Controller.retrieveInventoryItem)
   .put(Middleware.checkRequestContentType, Controller.replaceInventory)
   .patch(Middleware.checkRequestContentType, Controller.updateInventory)
   .delete(Controller.deleteInventory);
 
-module.exports = Router;
+module.exports = RouterV1;
