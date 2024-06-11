@@ -1,7 +1,8 @@
 const Product = require("./model");
-const GetDbConnection = require("./connection");
+const Config = require("./config");
+const GetConnection = require("./connection");
 
-GetDbConnection;
+GetConnection(Config.MONGO_URI);
 
 exports.consumer = async (event) => {
   for (const record of event.Records) {

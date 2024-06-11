@@ -1,7 +1,4 @@
-const dotenv = require("dotenv");
-const DbConnection = require("mongoose");
-
-dotenv.config();
+const mongoose = require("mongoose");
 
 let currentRetries = 0;
 
@@ -9,12 +6,13 @@ let retryDelay = 5000;
 
 const maxRetries = 5;
 
-const Connect = async () => {
-  const connectionUri = process.env.MONGO_URI;
+const Connection = async (connectionUri) => {
   try {
-    await DbConnection.connect(connectionUri, {
-      serverSelectionTimeoutMS: 10000,
-    });
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(connectionUri, {
+        serverSelectionTimeoutMS: 10000,
+      });
+    }
   } catch (err) {
     if (currentRetries < maxRetries) {
       console.log(`Attempting reconnection to database`);
@@ -23,7 +21,7 @@ const Connect = async () => {
 
       retryDelay *= 2;
 
-      setTimeout(Connect, retryDelay);
+      setTimeout(Connection(connectionUri), retryDelay);
     } else {
       console.log(
         `Database connection error\nMax retries reached, Could not establish connection to database:\n${err.message}`
@@ -32,22 +30,20 @@ const Connect = async () => {
   }
 };
 
-DbConnection.connection.on("connecting", () => {
+mongoose.connection.on("connecting", () => {
   console.log(`Attempting connection to database`);
 });
 
-DbConnection.connection.on("connected", () => {
+mongoose.connection.on("connected", () => {
   console.log("Database connection successful");
 });
 
-DbConnection.connection.on("disconnected", () => {
+mongoose.connection.on("disconnected", () => {
   console.log("Database connection failure");
 });
 
-DbConnection.connection.on("reconnected", () => {
+mongoose.connection.on("reconnected", () => {
   console.log("Database reconnection successful");
 });
 
-Connect();
-
-module.exports = DbConnection;
+module.exports = Connection;
