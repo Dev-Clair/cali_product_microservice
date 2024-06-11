@@ -2,20 +2,20 @@ const express = require("express");
 const Middleware = require("../middlewares/middleware");
 const Controller = require("../controllers/controller");
 
-const Router = express.Router();
+const RouterV1 = express.Router();
 
-Router.route("/products")
+RouterV1.route("/")
   .get(Controller.retrieveProductCollection)
   .post(Controller.methodNotAllowed);
 
-Router.route("/products/info").get(Controller.retrieveProductApiInfo);
+RouterV1.route("/info").get(Controller.retrieveProductApiInfo);
 
-Router.route("/products/search").get(Controller.retrieveProductSearch);
+RouterV1.route("/search").get(Controller.retrieveProductSearch);
 
-Router.route("/products/:id")
+RouterV1.route("/:id")
   .get(Controller.retrieveProductItem)
   .put(Controller.methodNotAllowed)
   .patch(Controller.methodNotAllowed)
   .delete(Controller.methodNotAllowed);
 
-module.exports = { Router };
+module.exports = RouterV1;
