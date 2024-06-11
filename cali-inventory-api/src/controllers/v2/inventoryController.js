@@ -6,7 +6,7 @@ const { Inventory } = require("../../models/model");
 const retrieveInventoryApiInfo = (req, res, next) => {
   return res.status(200).json({
     name: "cali_inventory_microservice",
-    version: "1.0.0",
+    version: "2.0.0",
     status: "active",
     guide: {
       body: {
@@ -25,18 +25,18 @@ const retrieveInventoryApiInfo = (req, res, next) => {
       operations: {
         collectionOperations: [
           {
-            path: "/api/v1/inventories/",
+            path: "/api/v2/inventories/",
             allowed: ["POST"],
             notAllowed: ["GET"],
           },
           {
-            path: "/api/v1/inventories/search",
+            path: "/api/v2/inventories/search",
             allowed: ["GET"],
             notAllowed: ["POST"],
           },
         ],
         itemOperations: {
-          path: "/api/v1/inventories/:id",
+          path: "/api/v2/inventories/:id",
           allowed: ["PUT", "PATCH", "DELETE"],
           notAallowed: ["GET"],
         },
