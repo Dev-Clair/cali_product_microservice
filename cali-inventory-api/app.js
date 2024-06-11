@@ -19,7 +19,7 @@ App.use(hpp());
 App.use(express_mongo_sanitize());
 
 // Define Routes
-App.use("/api/v1/inventories", Router.Router);
+App.use("/api/v1", Router.Router);
 
 App.all("*", (req, res, next) => {
   return res.status(404).json({
