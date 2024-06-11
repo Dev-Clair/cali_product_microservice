@@ -1,8 +1,9 @@
 const Product = require("./model");
 const Transform = require("./transform");
-const GetDbConnection = require("./connection");
+const Config = require("./config");
+const GetConnection = require("./connection");
 
-GetDbConnection;
+GetConnection(Config.MONGO_URI);
 
 exports.inventoryBus = async (event) => {
   let payload;
