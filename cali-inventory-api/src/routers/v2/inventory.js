@@ -13,7 +13,7 @@ RouterV2.route("/info").get(ControllerV2.retrieveInventoryApiInfo);
 RouterV2.route("/search").get(ControllerV2.retrieveInventorySearch);
 
 RouterV2.route("/:id")
-  .get(Controller.retrieveInventoryItem)
+  .get(ControllerV2.retrieveInventoryItem)
   .put(Middleware.checkRequestContentType, ControllerV2.replaceInventory)
   .patch(Middleware.checkRequestContentType, ControllerV2.updateInventory)
   .delete(ControllerV2.deleteInventory);
