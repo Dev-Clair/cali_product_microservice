@@ -1,7 +1,16 @@
 const serverless = require("serverless-http");
 const App = require("./app");
-const GetDbConnection = require("./connection");
+const Config = require("./config");
+const GetConnection = require("./connection");
 
-GetDbConnection;
+GetConnection(Config.MONGO_URI);
 
-exports.inventory = serverless(App);
+if (Config.NODE_ENV === "development") {
+  App.listen(Config.PORT || 3999, () => {
+    console.log(
+      `Server process started, listening on port ${Config.PORT || 3999}`
+    );
+  });
+} else {
+  exports.inventory = serverless(App);
+}
